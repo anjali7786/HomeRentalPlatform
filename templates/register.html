@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+   <link rel="stylesheet" href="{{url_for('static',filename='register.css')}}">
+   <title>Register Form</title>
+</head>
+<body>
+   <header>
+      <nav id="header-nav" class="navbar navbar-expand-md  sticky-top">
+      <div class="container-fluid">
+
+              <a class="navbar-brand" href="index.html"><img class="logo" src="{{url_for('static',filename='./images/logo3.jpg')}}" alt=""><strong class="heading">Home Rental Platform</strong></a>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" >
+                <span class="navbar-toggler-icon"></span>
+
+              </button>
+
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+              <ul class="nav navbar-nav">
+                  <li id="item2" class="nav-item">
+                      <a class="nav-link" href="/login">Login</a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+</header>
+    <div class="container-fluid">
+        <div class="row justify-content-center custom-margin">
+           <div class="col-sm-6 col-md-4">
+              <form action="{{ url_for('register') }}" method="post" class="  p-4 " id="f">
+                 <div class="form-group">
+                     <h1 id="f1">REGISTER</h1>
+                    <label for="username" class="pl-2 font-weight-bold">Username</label>
+                    <input aria-labelledby="f" type="text" class="form-control" placeholder="Username" id="u-name"  name="username">
+                    <small></small>
+                 </div>
+                 <div class="form-group">
+                   
+                   <label for="Full Name" class="pl-2 font-weight-bold">Full Name</label>
+                   <input aria-labelledby="f" type="text" class="form-control" placeholder="Fullname" name="fullname"  id="f-name">
+                   <small></small>
+                </div>
+                <div class="form-group">
+                    
+                   <label for="Mobile Number" class="pl-2 font-weight-bold">Mobile Number</label>
+                   <input aria-labelledby="f" type="text" class="form-control" placeholder="10 Digit Mobile Number" name="mobile" id="m-no">
+                   <small></small>
+                </div>
+                <div class="form-group">
+                    
+                   <label for="Email" class="pl-2 font-weight-bold">Email</label>
+                   <input aria-labelledby="f" type="email" class="form-control" placeholder="Email" name="email" id="email">
+                   <small></small>
+                </div>
+                <div class="form-group">
+                    
+                   <label for="pass" class="pl-2 font-weight-bold">Password</label>
+                   <input aria-labelledby="f" type="password" class="form-control" placeholder="Password" name="password" id="password">
+                   
+                   <small></small>
+                </div>
+                <div class="form-group">
+                    
+                    <label for="cpass" class="pl-2 font-weight-bold">Confirm Password</label>
+                    <input aria-labelledby="f" type="password" class="form-control" placeholder="Confirm Password" name="cpassword" id="cpassword">
+                    <small></small>
+                 </div>
+                  <div class="msg">{{ msg }}</div>
+                 <button type="submit" class="btn btn-outline-success mt-3 btn-block shadow-lg font-weight-bold">Register</button>
+              </form>
+           </div>
+        </div>
+     </div>
+     
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>
