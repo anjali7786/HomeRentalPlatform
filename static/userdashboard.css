@@ -16,8 +16,6 @@ html { height: 100%;}
     font-size: larger;
 }
 
-
-
 #wrapper {
   padding-left: 0;
   -webkit-transition: all 0.5s ease;
@@ -309,7 +307,6 @@ display: block;
 -webkit-transform: translate3d(-100px,0,0);
 -webkit-transition: all .35s ease-in-out;
 }
-
 
 
 .overlay {

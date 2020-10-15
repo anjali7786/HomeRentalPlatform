@@ -324,3 +324,148 @@ display: block;
   background-color: rgba(250,250,250,.8);
   z-index: 1;
 }
+
+form
+{
+	width: 60%;
+	margin: 5% 0;
+	margin-left: 20%;
+	/* background-color:#253f5c;	 */
+  margin-bottom: 5%;
+  background: linear-gradient(180deg, #252529,#253f5c, rgb(70, 70, 70));
+}
+
+p{
+  color: #a5e7f1;
+	margin:0 3%;
+	font-size:130%;
+	font-style: sans-serif;
+}
+
+
+#head {
+	text-align: center;
+    color:#ecb100;
+    font-size: 300%;
+    font-style: inherit;
+    margin-bottom: 1em;
+    font-family:Georgia, 'Times New Roman', Times, serif ;
+	text-transform: uppercase;
+	letter-spacing:2px;
+}
+
+
+label{
+	color:#ffffff;
+  display: inline;
+  margin:2%;
+  border-radius: 10%;
+  overflow: hidden;
+}
+
+input[type=text],input[type=email],input[type=number]{
+  width:95%;
+  padding: 0.8%;
+  margin:0.5% 2%;
+  display: inline-block;
+  border: none;
+  font-style: inherit;
+  background: #f1f1f1;
+  opacity: 0.8;
+}
+
+input[type=file]
+{
+  width:95%;
+  padding: 0.8%;
+  margin:0.5% 2%;
+  display: inline-block;
+  border: none;
+  font-style: inherit;
+  opacity: 0.9;
+}
+
+.btn{
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  display: inline-block;
+  width:95%;
+  padding: 0.8%;
+  margin:1% 2%;
+  opacity: 0.8;
+}
+
+.btn:hover{
+  opacity:1.0;
+  color:#000;
+  display: inline-block;
+  width:97%;
+  margin-left: 1.5%;
+  background-color: #4CAF50;
+  font-size: 105%;
+}
+
+
+input:focus{
+  opacity:1.0;
+  color:#000;
+  background-color: #ddd;
+  font-size: 95%;
+}
+
+@media (max-width:1024px)and (min-width:769px){
+
+  p{
+    margin:0 3%;
+    font-size:120%;
+  }
+  #head {
+    text-align: center;
+      color:#ecb100;
+      font-size: 200%;
+      font-style: inherit;
+      margin-bottom: 1em;
+      font-family:Georgia, 'Times New Roman', Times, serif ;
+    text-transform: uppercase;
+    letter-spacing:2px;
+  }
+}
+@media (max-width:768px) and (min-width:425px){
+  p{
+    color: #a5e7f1;
+    margin:0 3%;
+    font-size:100%;
+    font-style: sans-serif;
+  }
+  #head {
+    text-align: center;
+      color:#ecb100;
+      font-size: 150%;
+      font-family:Georgia, 'Times New Roman', Times, serif ;
+      margin-bottom: 1em;
+      font-style: inherit;
+    text-transform: uppercase;
+    letter-spacing:1.5px;
+  }
+}
+@media (max-width:424px){
+  p{
+    color: #a5e7f1;
+    margin:0 2%;
+    font-size:80%;
+    font-style: sans-serif;
+  }
+  
+#head {
+  text-align: center;
+    font-style: inherit;
+    color:#ecb100;
+    font-size: 100%;
+    margin-bottom: 1em;
+    font-family:Georgia, 'Times New Roman', Times, serif ;
+	text-transform: uppercase;
+	letter-spacing:1px;
+}
+ 
+}

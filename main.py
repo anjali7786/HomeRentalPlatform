@@ -3,7 +3,6 @@ from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
 
-
 app = Flask(__name__)
 
 app.secret_key = '66710c44ea2f24084dd73f9a'
@@ -12,6 +11,7 @@ app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'propertymanagement'
+
 mysql = MySQL(app)
 
 
@@ -34,7 +34,10 @@ def login():
               session['username'] = account['username']
               return redirect(url_for('dashboard'))
              else:
-              msg= 'Logged in successfully!'
+                 session['loggedin'] = True
+                 session['id'] = account['id']
+                 session['username'] = account['username']
+                 return redirect(url_for('userdashboard'))
          else:
             msg = 'Incorrect username/password!'
         else:
@@ -93,11 +96,21 @@ def register():
 
     return render_template('register.html', msg=msg)
 
+
 @app.route("/dashboard/")
 def dashboard():
     if 'loggedin' in session:
-        return render_template('dashboard.html', username=session['username'])
+        # return render_template('dashboard.html', username=session['username'])
+        return render_template('dashboard.html', username='admin')
     return redirect(url_for('login'))
+
+
+@app.route("/userdashboard/")
+def userdashboard():
+    if 'loggedin' in session:
+        return render_template('userdashboard.html', username=session['username'])
+    return redirect(url_for('login'))
+
 
 @app.route("/registeredusers/")
 def registeredusers():
@@ -107,6 +120,37 @@ def registeredusers():
         if resultValue > 0:
             userDetails = cur.fetchall()
             return render_template('registeredusers.html', userDetails=userDetails,username=session['username'])
+
+
+@app.route('/userdashboard/apmt_reg/', methods=['GET', 'POST'])
+def apmt_reg():
+    msg = ''
+    if request.method == 'POST':
+        # fetch data
+        details = request.form
+        apmtname = details['name']
+        email = details['Email']
+        mobile = details['Mobile']
+        plot_no = details['Plot']
+        address = details['Address']
+        landmark = details['Landmark']
+        city = details['City']
+        pin = details['Pincode']
+        state = details['State']
+        country = details['Country']
+        # Image = details['Apmt_Img']
+        if len(mobile) != 10:
+            msg = 'Enter 10 digit number'
+        elif len(pin) != 10:
+            msg = 'Enter 6 digit number'
+        else:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO apartmentdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                        (apmtname, email, mobile, plot_no, address, landmark, city, pin, state, country))
+            mysql.connection.commit()
+            cur.close()
+            msg = 'Registration Successful! Thank You !'
+    return render_template('Apmt_reg.html', msg=msg)
 
 
 app.run(debug=True)
