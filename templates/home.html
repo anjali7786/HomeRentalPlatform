@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Homepage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+</head>
+<body>
+        <nav id="header-nav" class="navbar navbar-expand-md sticky-top">
+        <div class="container-fluid">
+                <!-- <div class="navbar-header"> -->
+                    <a class="navbar-brand" href="/home"><img class="logo" src="{{url_for('static', filename='./images/logo3.jpg')}}" alt=""><strong class="heading">Home Rental Platform</strong></a>
+                <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarResponsive" >
+                  <span class="navbar-toggler-icon "></span>
+                  <!-- <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span> -->
+                </button>
+            <!-- </div> -->
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                
+                <ul class="navbar-nav">
+                    <li id="item1" class="nav-item">
+                        <a class="nav-link" href="/about2">About</a>
+                    </li>
+                    <li id="item2" class="nav-item">
+                        <a class="nav-link" href="#">{{username}}</a>
+                    </li>
+                    <li id="item3" class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" data-interval="1400" >
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+                <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+                <li data-target="#carouselExampleCaptions" data-slide-to="3"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{url_for('static', filename='./images/pic1.jpg')}}" class="d-block" alt="pic1">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 style="font-weight: bold;">Great Experiences Are Just Around The Corner.</h5>
+                        <h5 style="font-weight: bold;">If your apartment was your best friend, this is what it would look like.</h5>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                 <img src="{{url_for('static', filename='./images/pic2.jpg')}}" class="d-block" alt="pic1">
+                 <div class="carousel-caption d-none d-md-block">
+                     <h5 style="font-weight: bold;">Luxury All Around</h5>
+                     <h5 style="font-weight: bold;">The Epicenter of Luxury and Convenience.Modern Conveniences & Entertainment, All Within Your Reach.</h5>
+                 </div>
+             </div>
+             <div class="carousel-item">
+                 <img src="{{url_for('static', filename='./images/pic3.jpg')}}" class="d-block" alt="pic1">
+                 <div class="carousel-caption d-none d-md-block">
+                     <h5 style="font-weight: bold;">A unique fusion of convenience and luxury. Available now!</h5>
+                     <h5 style="font-weight: bold;"> Discover the true definition of luxury.</h5>
+                 </div>
+             </div>
+             <div class="carousel-item">
+                 <img src="{{url_for('static', filename='./images/pic4.jpg')}}" class="d-block" alt="pic1">
+                 <div class="carousel-caption d-none d-md-block">
+                     <h5 style="font-weight: bold;">A Higher Quality of Living.</h5>
+                     <h5 style="font-weight: bold;"> Apartments Tailored to Your Highest Standards.</h5>
+                 </div>
+             </div>
+         </div>
+             <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                 <span class="sr-only">Previous</span>
+             </a>
+             <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next" >
+                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                 <span class="sr-only">Next</span>
+             </a>
+ 
+        </div>
+        <div id="search" class="row justify-content-center" >
+            <div class="col-12 col-md-10 col-lg-8">
+                <form class="card card-sm" method="post" action="/home">
+                                <div class="card-body row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <i class="fas fa-search h4 text-body"></i>
+                                    </div>
+                                    <!--end of col-->
+                                    <div class="col">
+                                        <input name="location" class="form-control form-control-sm form-control-borderless" type="search" placeholder="STATE">
+                                    </div>
+                                    <!--end of col-->
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="options" value="appartments" checked>Appartments
+                                            <input type="radio" class="form-check-input" name="options" value="rooms">Rooms
+                                        </label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-sm btn-primary" type="submit">Search</button>
+                                    </div>
+                                    <!--end of col-->
+                                </div>
+                </form>
+                <div class="data">
+                    {% if detail !="No records found" %}
+                    <h2>{{msg}}</h2>
+                    {% for u in detail %}
+                    <div class="card card-sm  ">
+                       <h3>Name: {{u['Aname']}}</h3>
+                        <h3>Email: {{u['Email']}}</h3>
+                        <h3>Mobile no: {{u['Mobile']}}</h3>
+                        <h3>Plot_no: {{u['Plot_no']}}</h3>
+                        <h3>Address: {{u['Address']}}</h3>
+                        <h3>City: {{u['City']}}</h3>
+                        <h3>Pincode: {{u['Pincode']}}</h3>
+                        <h3>State: {{u['State']}} </h3>
+                        <h3>Country: {{u['Country']}}</h3>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                        <h3>{{detail}}</h3>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+        <br/>
+        <br/>
+        <br/>
+    <footer id="footer" class="bg-dark fixed-bottom">
+        <div class="container-fluid py-2 text-center text-white">
+           &copy; All rights are reserved.
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>

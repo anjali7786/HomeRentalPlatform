@@ -14,6 +14,39 @@ app.config['MYSQL_DB'] = 'propertymanagement'
 
 mysql = MySQL(app)
 
+@app.route("/",methods =['GET', 'POST'])
+def home():
+    msg=""
+    if request.method == 'POST':
+        loc = request.form['location']
+        option = request.form['options']
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        if loc=="" and option=="appartments":
+            cur.execute('SELECT Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country FROM apartmentdetail')
+            result = cur.fetchall()
+            return render_template('index.html', detail=result, msg="Result for the search")
+        elif loc=="" and option=="rooms":
+            cur.execute('SELECT * FROM room')
+            result = cur.fetchall()
+            return render_template('index.html', detail=result, msg="Result for the search")
+        if option=="appartments":
+            cur.execute('SELECT Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country FROM apartmentdetail where State = % s', [loc])
+            result = cur.fetchall()
+        elif option=="rooms":
+            cur.execute('SELECT * FROM room where STATE = % s', [loc])
+            result = cur.fetchall()
+        mysql.connection.commit()
+        cur.close()
+        if result:
+            return render_template('index.html', detail=result,msg="Result for the search")
+        else:
+            return render_template('index.html', detail="No records found")
+    else:
+        return render_template('index.html')
+
+@app.route("/about")
+def about():
+    return render_template('about.html')
 
 @app.route("/login/", methods=['GET','POST'])
 def login():
@@ -139,18 +172,52 @@ def apmt_reg():
         state = details['State']
         country = details['Country']
         # Image = details['Apmt_Img']
-        if len(mobile) != 10:
-            msg = 'Enter 10 digit number'
-        elif len(pin) != 10:
-            msg = 'Enter 6 digit number'
-        else:
-            cur = mysql.connection.cursor()
-            cur.execute("INSERT INTO apartmentdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+        #if len(mobile) != 10:
+           # msg = 'Enter 10 digit number'
+       # elif len(pin) != 10:
+          #  msg = 'Enter 6 digit number'
+       # else:
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO apartmentdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                         (apmtname, email, mobile, plot_no, address, landmark, city, pin, state, country))
-            mysql.connection.commit()
-            cur.close()
-            msg = 'Registration Successful! Thank You !'
-    return render_template('Apmt_reg.html', msg=msg)
+        mysql.connection.commit()
+        cur.close()
+            #msg = 'Registration Successful! Thank You !'
+    return render_template('Apmt_reg.html',username=session['username'])
+
+@app.route("/home",methods =['GET', 'POST'])
+def home2():
+    msg=""
+    if request.method == 'POST':
+        loc = request.form['location']
+        option = request.form['options']
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        if loc=="" and option=="appartments":
+            cur.execute('SELECT Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country FROM apartmentdetail')
+            result = cur.fetchall()
+            return render_template('home.html', detail=result, msg="Result for the search",username=session['username'])
+        elif loc=="" and option=="rooms":
+            cur.execute('SELECT * FROM room')
+            result = cur.fetchall()
+            return render_template('home.html', detail=result, msg="Result for the search",username=session['username'])
+        if option=="appartments":
+            cur.execute('SELECT Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country FROM apartmentdetail where State = % s', [loc])
+            result = cur.fetchall()
+        elif option=="rooms":
+            cur.execute('SELECT * FROM room where STATE = % s', [loc])
+            result = cur.fetchall()
+        mysql.connection.commit()
+        cur.close()
+        if result:
+            return render_template('home.html', detail=result, msg="Result for the search", username=session['username'])
+        else:
+            return render_template('home.html', detail="No records found", username=session['username'])
+    else:
+        return render_template('home.html', username=session['username'])
+
+@app.route("/about2")
+def about2():
+    return render_template('about2.html', username=session['username'])
 
 
 app.run(debug=True)
