@@ -328,7 +328,7 @@ display: block;
 form
 {
 	width: 60%;
-	margin: 5% 0;
+	margin: 0 auto;
 	margin-left: 20%;
 	/* background-color:#253f5c;	 */
   margin-bottom: 5%;
@@ -356,9 +356,10 @@ p{
 
 
 label{
-	color:#ffffff;
+  color:#ffffff;
   display: inline;
   margin:2%;
+  font-size:1rem;
   border-radius: 10%;
   overflow: hidden;
 }
@@ -372,6 +373,13 @@ input[type=text],input[type=email],input[type=number]{
   font-style: inherit;
   background: #f1f1f1;
   opacity: 0.8;
+}
+
+input[type="radio"]
+{
+
+    display:inline-block;
+    margin-left:0.5em;
 }
 
 input[type=file]
@@ -430,6 +438,11 @@ input:focus{
     text-transform: uppercase;
     letter-spacing:2px;
   }
+  input[type="radio"]{
+    display:inline-block;
+    margin-left:0.4em;
+    }
+
 }
 @media (max-width:768px) and (min-width:425px){
   p{
@@ -448,6 +461,13 @@ input:focus{
     text-transform: uppercase;
     letter-spacing:1.5px;
   }
+  input[type="radio"]
+{
+
+    display:inline-block;
+    margin-left:0.35em;
+}
+
 }
 @media (max-width:424px){
   p{
@@ -456,7 +476,7 @@ input:focus{
     font-size:80%;
     font-style: sans-serif;
   }
-  
+
 #head {
   text-align: center;
     font-style: inherit;
@@ -467,5 +487,22 @@ input:focus{
 	text-transform: uppercase;
 	letter-spacing:1px;
 }
- 
+
+form
+{
+	width: 90%;
+	margin: 5% 0;
+	margin-left: 5%;
+	/* background-color:#253f5c;	 */
+  margin-bottom: 5%;
+  background: linear-gradient(180deg, #252529,#253f5c, rgb(70, 70, 70));
+}
+
+input[type="radio"]
+{
+
+    display:inline-block;
+    margin-left:0.3em;
+}
+
 }

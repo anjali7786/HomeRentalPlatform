@@ -1,8 +1,13 @@
-body {
+body{
+  background-size: 100% 100%;
+  background-image: url('images/user_db.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #CFD8DC;
   position: relative;
   overflow-x: hidden;
-  background-color: #CFD8DC;
 }
+
 body,
 html { height: 100%;}
 .nav .open > a,
