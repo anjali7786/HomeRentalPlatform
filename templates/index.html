@@ -22,15 +22,31 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 
                 <ul class="navbar-nav">
-                    <li id="item1" class="nav-item">
-                        <a class="nav-link" href="/about">About</a>
-                    </li>
-                    <li id="item2" class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    <li id="item3" class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
-                    </li>
+                    {%if username==""%}
+                        <li id="item1" class="nav-item">
+                           <a class="nav-link" href="/about">About</a>
+                        </li>
+                        <li id="item2" class="nav-item">
+                           <a class="nav-link" href="/login">Login</a>
+                        </li>
+                        <li id="item3" class="nav-item">
+                           <a class="nav-link" href="/register">Register</a>
+                        </li>
+                    {%else%}
+                        <li id="item1" class="nav-item">
+                            <a class="nav-link" href="/about">About</a>
+                        </li>
+                        <li id="item2" class="nav-item">
+                            {%if username=="admin"%}
+                               <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                            {%else%}
+                               <a class="nav-link" href="{{ url_for('userdashboard') }}">Dashboard</a>
+                            {%endif%}
+                        </li>
+                        <li id="item3" class="nav-item">
+                            <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                        </li>
+                    {%endif%}
                 </ul>
             </div>
         </div>
@@ -84,7 +100,7 @@
  
         </div>
         <div id="search" class="row justify-content-center" >
-            <div class="col-12 col-md-10 col-lg-8">
+            <div class="col-6 col-md-10 col-lg-8">
                 <form class="card card-sm" method="post" action="/">
                                 <div class="card-body row no-gutters align-items-center">
                                     <div class="col-auto">
@@ -93,38 +109,84 @@
                                     <!--end of col-->
                                     <div class="col">
                                         <input name="location" class="form-control form-control-sm form-control-borderless" type="search" placeholder="STATE">
+                                        <br>
+                                        <input name="city" class="form-control form-control-sm form-control-borderless" type="search" placeholder="CITY">
+                                        <br>
+                                        <div class="form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" id="Apartment" name="options" value="apartments" checked>Apartments
+                                                <input type="radio" class="form-check-input" id="Room" name="options" value="rooms">Rooms
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <br>
+                                            <h6>Price Range</h6>
+                                            <br>
+                                            <input name="minprice" class="form-control form-control-sm form-control-borderless" type="text" placeholder="Min">
+                                            <br>
+                                            <input name="maxprice" class="form-control form-control-sm form-control-borderless" type="text" placeholder="Max">
+                                            <br>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button class="btn btn-sm btn-primary" type="submit">Search</button>
+                                        </div>
                                     </div>
                                     <!--end of col-->
-                                    <div class="form-check-inline">
-                                        <label class="form-check-label">
-                                            <input type="radio" class="form-check-input" name="options" value="appartments" checked>Appartments
-                                            <input type="radio" class="form-check-input" name="options" value="rooms">Rooms
-                                        </label>
-                                    </div>
-                                    <div class="col-auto">
-                                        <button class="btn btn-sm btn-primary" type="submit">Search</button>
-                                    </div>
                                     <!--end of col-->
                                 </div>
                 </form>
+            </div>
+            <div class="col-12 col-md-10 col-lg-8">
                 <div class="data">
                     {% if detail !="No records found"%}
-                    <h2>{{msg}}</h2>
+                    <h4>{{msg}}</h4>
                     {% for u in detail %}
-                    <div class="card card-sm  ">
-                       <h3>Name: {{u['Aname']}}</h3>
-                        <h3>Email: {{u['Email']}}</h3>
-                        <h3>Mobile no: {{u['Mobile']}}</h3>
-                        <h3>Plot_no: {{u['Plot_no']}}</h3>
-                        <h3>Address: {{u['Address']}}</h3>
-                        <h3>City: {{u['City']}}</h3>
-                        <h3>Pincode: {{u['Pincode']}}</h3>
-                        <h3>State: {{u['State']}} </h3>
-                        <h3>Country: {{u['Country']}}</h3>
+                    <div class="card card-sm ">
+                        <div class="dbox">
+                           {% if op=="a" %}
+                                 <div class="img_search"><img src="{{url_for('static', filename='./images/B1.jpg')}}"></div>
+                                 <div class=" detail">
+                                     <p class="1">Name of apartment: {{u['Aname']}}</p>
+                                     <p class="2">Plot_no: {{u['Plot_no']}}</p>
+                                     <p class="3">Address: {{u['Address']}}</p>
+                                     <p class="4">City: {{u['City']}}</p>
+                                     <p class="5">Pincode: {{u['Pincode']}}</p>
+                                     <p class="6">State: {{u['State']}} </p>
+                                     <p class="7">Country: {{u['Country']}}</p>
+                                     <p class="8">Price: {{u['Price']}}</p>
+                                     <p class="9">Atype: {{u['Atype']}}</p>
+                                     <p class="10">RS: {{u['RS']}}</p>
+                                     <p class="11">Availability: {{u['Availability']}}</p>
+                                     <p class="12">Facilities: {{u['Facilities']}}</p>
+                                     <p class="13">Description: {{u['Dscrption']}}</p>
+                                     {%if username!="admin"%}
+                                     <a class="buy" href="{{url_for('Buy_property',id=u['A_ID'])}}">Apply</a>
+                                     {%endif%}
+                                 </div>
+                            {%else%}
+                                <div class="img_search"><img src="{{url_for('static', filename='./images/B1.jpg')}}"></div>
+                                 <div class=" detail">
+                                     <p class="1">Plot_no: {{u['Plot_no']}}</p>
+                                     <p class="2">Address: {{u['Address']}}</p>
+                                     <p class="3">City: {{u['City']}}</p>
+                                     <p class="4">Pincode: {{u['Pincode']}}</p>
+                                     <p class="5">State: {{u['State']}} </p>
+                                     <p class="6">Country: {{u['Country']}}</p>
+                                     <p class="7">Avaiability: {{u['Availability']}}</p>
+                                     <p class="8">Rent: {{u['Rent']}}</p>
+                                     <p class="9">Facilities: {{u['Facilities']}}</p>
+                                     <p class="10">Description: {{u['Dscrption']}}</p>
+                                     {%if username!="admin"%}
+                                     <a class="buy" href="#">Apply</a>
+                                     {%endif%}
+                                 </div>
+                            {%endif%}
+                        </div>
                     </div>
+                    <br>
                     {% endfor %}
                     {% else %}
-                        <h3>{{detail}}</h3>
+                        <p>{{detail}}</p>
                     {% endif %}
                 </div>
             </div>

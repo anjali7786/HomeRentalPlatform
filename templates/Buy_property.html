@@ -13,7 +13,7 @@
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
 
 	<!-- Css file  -->
-    <link rel="stylesheet" href="{{url_for('static',filename='Property_reg.css')}}">
+	<link rel="stylesheet" href="{{url_for('static',filename='Property_reg.css')}}">
 
 
 
@@ -31,17 +31,18 @@
         <div class="sidebar-header">
         <div class="sidebar-brand">
           <a href="/">Home</a></div></div>
-        <li><a href="/userdashboard/">Dashboard</a></li>
+        <li><a href="#">Dashboard</a></li>
         <li class="dropdown">
         <a href="#" class="dropdown-toggle"  data-toggle="dropdown">User <span class="caret"></span></a>
       <ul class="dropdown-menu animated fadeInLeft" role="menu">
        <div class="dropdown-header">{{username}}</div>
+		  <li class="dropdown-header">{{email1}}</li>
        <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
        </ul>
        </li>
           <li><a href="#">Details/Update</a></li>
        <li><a href="#">Complaints</a></li>
-      </ul>
+       </ul>
    </nav>
 
          <div id="page-content-wrapper">
@@ -53,30 +54,26 @@
 		 </div>
 </div>
 
-    <!-- Links -->
-    <ul class="nav nav-pills justify-content center" style="margin-left:21%;">
-    <li class="nav-item">
-      <a class="nav-link active bg-dark" href="/userdashboard/room_reg/">Individual Room Registration</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link bg-light" href="/userdashboard/apmt_reg/">Appartment Rezgistration</a>
-    </li>
-  </ul>
-
-
 	<div class="container-fluid main">
 		<div class="col">
-           	<form id="Areg" method="POST" action="" enctype="multipart/form-data">
-				<h1 id="head">Register Room</h1>
+           	<form id="Areg" method="POST" action="{{url_for('Buy_property',id=id)}}">
+				<h1 id="head">Buy Property</h1>
 
-		<p>Please fill in the form to register</p><br>
-
-		<label for="email"><b>Email</b></label><br>
-			<input aria-labelledby="Areg" type="email" class="form-control" placeholder="Email" id="email" name="Email" required><br>
+		<p>Please fill in the form to buy property</p><br>
+		<label for="A_ID"><b>A_ID</b></label><br>
+			<input aria-labelledby="Areg" type="number" class="form-control"  id="A_ID" name="A_ID" value="{{id}}" required readonly><br>
+		<label for="Aname"><b>Apartment Name</b></label><br>
+				{% for i in datas%}
+				<input aria-labelledby="Areg" type="text" class="form-control" placeholder="Apartment Name" id="Aname" name="Aname" value="{{i['Aname']}}" required readonly><br>
+				{%endfor%}
+        <label for="Fullname"><b>Full Name</b></label><br>
+			<input aria-labelledby="Areg" type="text" class="form-control" placeholder="Full Name" id="Fullname" name="Fullname" required><br>
+		<label for="Email"><b>Email</b></label><br>
+			<input aria-labelledby="Areg" type="email" class="form-control" placeholder="Email" id="Email" name="Email" required><br>
 		<label for="Mobile"><b>Mobile No.</b></label><br>
-			<input aria-labelledby="Areg" type="number" class="form-control" placeholder="10 Digit Mobile Number" id="Mobile" name="Mobile" required><br>
+			<input aria-labelledby="Areg" type="number" class="form-control" placeholder="Mobile" id="Mobile" name="Mobile" required><br>
 		<label for="Plot"><b>Plot Number</b></label><br>
-			<input aria-labelledby="Areg" type="number" class="form-control" placeholder="Plot Number" id="Plot" name="Plot" required><br>
+			<input aria-labelledby="Areg" type="number" class="form-control" placeholder="Plot Number" id="Plot" name="Plot_no" required><br>
 		<label for="Address"><b>Address</b></label><br>
 			<input  aria-labelledby="Areg" type="text" class="form-control" placeholder="Enter your Address" id="Address" name="Address" required><br>
 		<label for="Landmark"><b>Landmark</b></label><br>
@@ -89,26 +86,11 @@
 			<input  aria-labelledby="Areg" type="text" class="form-control" placeholder="State" id="State" name="State" required><br>
 		<label for="Country"><b>Country</b></label><br>
 			<input  aria-labelledby="Areg" type="text" class="form-control" placeholder="Country" id="Country" name="Country" required><br>
-
-    <div class = "control">
-        <label for ="vacant"><b>Status</b></label><br>
-          <input type = "radio" id="vacant" name = "status" value = "vacant">
-        <label for = "vacant">Vacant</label>
-          <input type = "radio" id="occupied" name = "status" value = "occupied">
-        <label for = "occupied">Occupied</label>
-    </div>
-
-    <label for="Rent"><b>Rent</b></label><br>
-        <input  aria-labelledby="Areg" type="number" class="form-control" placeholder="Rent" id="Rent" name="Rent" required><br>
-    <label for="Facilities"><b>Facilities</b></label><br>
-        <input  aria-labelledby="Areg" type="text" class="form-control" placeholder="Facilities" id="Facilities" name="Facilities" required><br>
-    <label for="Description"><b>Description</b></label><br>
-        <input  aria-labelledby="Areg" type="text" class="form-control" placeholder="Description" id="Description" name="Description" required><br>
-
- 	<label for="file" style="padding-top: 1%;"><b>Upload Image</b></label><br>-->
-        <input aria-labelledby="Areg" type="file" id="file" name="file" style="border-bottom:none; margin-left: 2%; color:#fff;" required><br>-->
-
-    	<button  aria-labelledby="Areg" type="submit" class="btn">Register</button>
+<!--      	<label for="Apmt_Img" style="padding-top: 1%;"><b>Upload Image</b></label><br>-->
+<!--        	<input aria-labelledby="Areg" type="file" id="Apmt_Img" name="Apmt_Img" style="border-bottom:none; margin-left: 2%; color:#fff;" required><br>-->
+<!--	-->
+		<div class="msg" style="color:white; justify-content:centre;">{{msg}}</div>
+		<button  aria-labelledby="Areg" type="submit" class="btn">Submit</button>
 
 	</form>
 	</div>

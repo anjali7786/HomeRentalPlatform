@@ -22,12 +22,25 @@
             <!-- </div> -->
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="nav navbar-nav">
-                    <li id="item2" class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    <li id="item3" class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
-                    </li>
+                    {%if username=="" %}
+                       <li id="item2" class="nav-item">
+                          <a class="nav-link" href="/login">Login</a>
+                       </li>
+                       <li id="item3" class="nav-item">
+                          <a class="nav-link" href="/register">Register</a>
+                       </li>
+                    {%else%}
+                       <li id="item2" class="nav-item">
+                        {%if username=="admin"%}
+                          <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                        {%else%}
+                          <a class="nav-link" href="{{ url_for('userdashboard') }}">Dashboard</a>
+                        {%endif%}
+                       </li>
+                       <li id="item3" class="nav-item">
+                          <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                       </li>
+                    {%endif%}
                 </ul>
             </div>
         </div>

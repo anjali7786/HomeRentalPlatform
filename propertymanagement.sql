@@ -52,9 +52,27 @@ CREATE TABLE roomdetail(
  	Dscrption varchar(500) NOT NULL,
     image blob NOT NULL,
  	PRIMARY KEY (R_ID)
- )
+ );
 
+
+CREATE TABLE Buy_propertyapt(
+    bapt_id int(110) NOT NULL AUTO_INCREMENT,
+    A_ID int(110) NOT NULL,
+    Aname varchar(50) NOT NULL,
+    Fullname varchar(50) NOT NULL,
+    Email varchar(100) NOT NULL,
+    Mobile decimal(10,0) NOT NULL,
+    Plot_no int NOT NULL,
+    Address varchar(100) NOT NULL,
+    Landmark varchar(100) NOT NULL,
+    City varchar(50) NOT NULL,
+    Pincode decimal(6,0) NOT NULL,
+    State varchar(50) NOT NULL,
+    Country varchar(50) NOT NULL,
+    primary key(bapt_id),
+    foreign key(A_ID) references apartmentdetail(A_ID)
+);
 
 INSERT INTO accounts (id, username, fullname,email,mobile,password,cpassword) VALUES (1, 'admin', 'admin','admin@gmail.com','1234567890','admin','admin');
 
-Select * from roomdetail;
+Select * from Buy_property;

@@ -3,7 +3,6 @@ from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
 import os,uuid
-
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -17,45 +16,148 @@ app.config['MYSQL_DB'] = 'propertymanagement'
 
 mysql = MySQL(app)
 
-
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/",methods =['GET', 'POST'])
 def home():
-    msg = ""
+    msg=""
+    op=""
     if request.method == 'POST':
         loc = request.form['location']
+        city = request.form['city']
         option = request.form['options']
+        minprice = request.form['minprice']
+        maxprice = request.form['maxprice']
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        if loc == "" and option == "appartments":
-            cur.execute(
-                'SELECT Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country FROM apartmentdetail')
-            result = cur.fetchall()
-            return render_template('index.html', detail=result, msg="Result for the search")
-        elif loc == "" and option == "rooms":
-            cur.execute('SELECT * FROM room')
-            result = cur.fetchall()
-            return render_template('index.html', detail=result, msg="Result for the search")
-        if option == "appartments":
-            cur.execute(
-                'SELECT Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country FROM apartmentdetail where State = % s',
-                [loc])
-            result = cur.fetchall()
-        elif option == "rooms":
-            cur.execute('SELECT * FROM room where STATE = % s', [loc])
-            result = cur.fetchall()
+        if option=="apartments":
+            op="a"
+            if loc=="" and city=="" and minprice=="" and maxprice=="":
+                cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail')
+                result = cur.fetchall()
+            elif loc!="":
+                if city=="" and minprice=="" and maxprice=="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s',[loc])
+                    result = cur.fetchall()
+                elif city!="" and minprice=="" and maxprice=="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and City = %s',([loc],[city]))
+                    result = cur.fetchall()
+                elif city!="" and minprice!="" and maxprice=="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and City = %s and Price>=%s',([loc], [city],[minprice]))
+                    result = cur.fetchall()
+                elif city!="" and minprice=="" and maxprice!="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and City = %s and Price<=%s',([loc], [city],[maxprice]))
+                    result = cur.fetchall()
+                elif city=="" and minprice=="" and maxprice!="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and Price<=%s',([loc],[maxprice]))
+                    result = cur.fetchall()
+                elif city=="" and minprice!="" and maxprice=="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and Price<=%s',([loc],[maxprice]))
+                    result = cur.fetchall()
+                elif city=="" and minprice!="" and maxprice!="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and Price>=%s and Price<=%s',([loc], [minprice],[maxprice]))
+                    result = cur.fetchall()
+                elif city!="" and minprice!="" and maxprice!="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and City=%s and Price>=%s and Price<=%s',([loc],[city], [minprice],[maxprice]))
+                    result = cur.fetchall()
+            elif city!="" and loc=="":
+                if minprice=="" and maxprice=="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where City = % s',[city])
+                    result = cur.fetchall()
+                elif minprice=="" and maxprice!="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where City = % s and Price<=%s',([city],[maxprice]))
+                    result = cur.fetchall()
+                elif minprice!="" and maxprice=="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where City = % s and Price<=%s',([city],[maxprice]))
+                    result = cur.fetchall()
+                elif minprice!="" and maxprice!="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where City = % s and Price>=%s and Price<=%s',([city], [minprice],[maxprice]))
+                    result = cur.fetchall()
+            elif city=="" and loc=="":
+                if minprice=="" and maxprice!="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where Price<=%s',([maxprice]))
+                    result = cur.fetchall()
+                elif minprice!="" and maxprice=="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where Price>=%s',([minprice]))
+                    result = cur.fetchall()
+                elif minprice!="" and maxprice!="":
+                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where Price>=%s and Price<=%s',([minprice],[maxprice]))
+                    result = cur.fetchall()
+        elif option=="rooms":
+            op="r"
+            if loc=="" and city=="" and minprice=="" and maxprice=="":
+                cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail')
+                result = cur.fetchall()
+            elif loc!="":
+                if city=="" and minprice=="" and maxprice=="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s',[loc])
+                    result = cur.fetchall()
+                elif city!="" and minprice=="" and maxprice=="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City = %s',([loc],[city]))
+                    result = cur.fetchall()
+                elif city!="" and minprice!="" and maxprice=="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City = %s and Rent>=%s',([loc], [city],[minprice]))
+                    result = cur.fetchall()
+                elif city!="" and minprice=="" and maxprice!="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City = %s and Rent<=%s',([loc], [city],[maxprice]))
+                    result = cur.fetchall()
+                elif city=="" and minprice=="" and maxprice!="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and Rent<=%s',([loc],[maxprice]))
+                    result = cur.fetchall()
+                elif city=="" and minprice!="" and maxprice=="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and Rent<=%s',([loc],[maxprice]))
+                    result = cur.fetchall()
+                elif city=="" and minprice!="" and maxprice!="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and Rent>=%s and Rent<=%s',([loc], [minprice],[maxprice]))
+                    result = cur.fetchall()
+                elif city!="" and minprice!="" and maxprice!="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City=%s and Rent>=%s and Rent<=%s',([loc],[city], [minprice],[maxprice]))
+                    result = cur.fetchall()
+            elif city!="" and loc=="":
+                if minprice=="" and maxprice=="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s',[city])
+                    result = cur.fetchall()
+                elif minprice=="" and maxprice!="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s and Rent<=%s',([city],[maxprice]))
+                    result = cur.fetchall()
+                elif minprice!="" and maxprice=="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s and Rent<=%s',([city],[maxprice]))
+                    result = cur.fetchall()
+                elif minprice!="" and maxprice!="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s and Rent>=%s and Price<=%s',([city], [minprice],[maxprice]))
+                    result = cur.fetchall()
+            elif city=="" and loc=="":
+                if minprice=="" and maxprice!="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent<=%s',([maxprice]))
+                    result = cur.fetchall()
+                elif minprice!="" and maxprice=="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent>=%s',([minprice]))
+                    result = cur.fetchall()
+                elif minprice!="" and maxprice!="":
+                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent>=%s and Rent<=%s',([minprice],[maxprice]))
+                    result = cur.fetchall()
         mysql.connection.commit()
         cur.close()
         if result:
-            return render_template('index.html', detail=result, msg="Result for the search")
+            if 'loggedin' in session:
+               return render_template('index.html', detail=result,msg="Result for the search",op=op,username=session['username'])
+            else:
+                return render_template('index.html', detail=result, msg="Result for the search", op=op,username="")
         else:
-            return render_template('index.html', detail="No records found")
+            if 'loggedin' in session:
+                return render_template('index.html', detail="No records found",username=session['username'])
+            else:
+                return render_template('index.html', detail="No records found",username="" )
     else:
-        return render_template('index.html')
+        if 'loggedin' in session:
+           return render_template('index.html',username=session['username'])
+        else:
+            return render_template('index.html', username="")
 
 
 @app.route("/about")
 def about():
-    return render_template('about.html')
-
+    if 'loggedin' in session:
+        return render_template('about.html',username=session['username'])
+    else:
+        return render_template('about.html', username="")
 
 @app.route("/login/", methods=['GET', 'POST'])
 def login():
@@ -202,47 +304,6 @@ def apmt_reg():
         # msg = 'Registration Successful! Thank You !'
     return render_template('Apmt_reg.html', username=session['username'])
 
-@app.route("/home", methods=['GET', 'POST'])
-def home2():
-    msg = ""
-    if request.method == 'POST':
-        loc = request.form['location']
-        option = request.form['options']
-        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        if loc == "" and option == "appartments":
-            cur.execute(
-                'SELECT Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country FROM apartmentdetail')
-            result = cur.fetchall()
-            return render_template('home.html', detail=result, msg="Result for the search",
-                                   username=session['username'])
-        elif loc == "" and option == "rooms":
-            cur.execute('SELECT * FROM rooms')
-            result = cur.fetchall()
-            return render_template('home.html', detail=result, msg="Result for the search",
-                                   username=session['username'])
-        if option == "appartments":
-            cur.execute(
-                'SELECT Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country FROM apartmentdetail where State = % s',
-                [loc])
-            result = cur.fetchall()
-        elif option == "rooms":
-            cur.execute('SELECT	fname, Email, Mobile, AltMobile, Plot_no, Address, Landmark, City, Pincode, State, Country, AvailRoom, RS, Availability ,Deposit, Facilities, Dscrption where STATE = % s', [loc])
-            result = cur.fetchall()
-        mysql.connection.commit()
-        cur.close()
-        if result:
-            return render_template('home.html', detail=result, msg="Result for the search",
-                                   username=session['username'])
-        else:
-            return render_template('home.html', detail="No records found", username=session['username'])
-    else:
-        return render_template('home.html', username=session['username'])
-
-
-@app.route("/about2")
-def about2():
-    return render_template('about2.html', username=session['username'])
-
 
 @app.route('/userdashboard/room_reg/', methods=['GET', 'POST'])
 def room_reg():
@@ -275,6 +336,61 @@ def room_reg():
         cur.close()
         # msg = 'Registration Successful! Thank You !'
     return render_template('roomreg.html', username=session['username'])
+
+
+
+@app.route("/Buy_property/<string:id>",methods =['GET', 'POST'])
+def Buy_property(id):
+    if 'loggedin' in session:
+        msg = ''
+        if request.method == 'POST':
+            A_ID = request.form['A_ID']
+            Aname = request.form['Aname']
+            Fullname = request.form['Fullname']
+            Email = request.form['Email']
+            Mobile = request.form['Mobile']
+            Plot_no = request.form['Plot_no']
+            Address = request.form['Address']
+            Landmark = request.form['Landmark']
+            City = request.form['City']
+            Pincode = request.form['Pincode']
+            State = request.form['State']
+            Country = request.form['Country']
+            if len(A_ID) > 0 and len(Aname) > 0 and len(Email) > 0 and len(Mobile) > 0 and len(Fullname) > 0 and len(
+                    City) > 0 and len(Plot_no) > 0 and len(Address) > 0 and len(Landmark) > 0 and len(
+                    Pincode) > 0 and len(State) > 0 and len(Country) > 0:
+                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                cursor.execute('SELECT * FROM Buy_propertyapt WHERE Email = % s', (Email,))
+                account1 = cursor.fetchone()
+                cursor.execute('SELECT * FROM Buy_propertyapt WHERE Mobile = % s', (Mobile,))
+                account2 = cursor.fetchone()
+                if not re.match(r'[^@]+@[^@]+\.[^@]+', Email):
+                    msg = 'Invalid email address !'
+                elif len(Mobile) != 10:
+                    msg = 'Enter 10 digit number !'
+                else:
+                    cursor.execute(
+                        'INSERT INTO Buy_propertyapt VALUES (NULL, % s, % s, % s, % s, % s, % s, %s, %s, %s, %s, %s, %s)',
+                        (A_ID, Aname, Fullname, Email, Mobile, Plot_no, Address, Landmark, City, Pincode, State,
+                         Country))
+                    mysql.connection.commit()
+                    cursor.close()
+                    msg = 'You have successfully registered !'
+                    return render_template("index.html",username=session['username'])
+            else:
+                msg = 'Please fill out the form !'
+            #return render_template("Buy_property.html",msg=msg, username=session['username'])
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute('SELECT Aname from apartmentdetail where A_ID=%s', [id,])
+        data = cur.fetchall()
+        cur.close()
+        return render_template("Buy_property.html",datas=data,msg=msg,id=id,username=session['username'])
+
+    else:
+        return redirect(url_for('login'))
+
+
+    #return render_template('Buy_property.html', msg=msg,username=session['username'])
 
 
 app.run(debug=True)
