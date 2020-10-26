@@ -84,11 +84,18 @@ body{
      box-shadow: 0 7px 11px rgba(0,0,0,.08), 0 0 7px rgba(0,0,0,.05);
       transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
   cursor: pointer;
+  font-family: Verdana, Geneva, Tahoma, sans-serif ;
 }
 .data .card:hover{
      transform: scale(1.02);
      padding: 14px 80px 18px 36px;
   box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+.dbox{
+    display: inline-flex;
+}
+.detail{
+    padding-left: 2%;
 }
 #footer{
     padding-bottom: 0px;
@@ -169,6 +176,7 @@ body{
         padding-top:0.5%;
         font-size:0.5em;
     }
+    
 }
 @media (max-width:424px){
     .navbar-brand{
@@ -219,6 +227,15 @@ body{
     }
     .col-md-12,.col-sm-12,.col-xs-12{
         font-size:0.4em;
+    }
+    .card input{
+        font-size: x-small;
+    }
+    .dbox{
+        display: block;
+    }
+    .detail{
+        padding-left: 0%;
     }
     footer {
     position: fixed;
