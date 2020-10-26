@@ -20,7 +20,10 @@ html { height: 100%;}
     font-style: normal;
     font-size: larger;
 }
-
+.logo31{
+  height: 40px;
+  border-radius: 60%;
+}
 #wrapper {
   padding-left: 0;
   -webkit-transition: all 0.5s ease;

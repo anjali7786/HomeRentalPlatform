@@ -1,7 +1,6 @@
 CREATE DATABASE propertymanagement;
 
 USE propertymanagement; 
-
 CREATE TABLE  accounts (
   	id int(11) NOT NULL AUTO_INCREMENT,
   	username varchar(50) NOT NULL,
@@ -14,7 +13,7 @@ CREATE TABLE  accounts (
 ); 
 
 CREATE TABLE apartmentdetail (
-    A_ID int NOT NULL AUTO_INCREMENT,
+    A_ID int(110) NOT NULL AUTO_INCREMENT,
     Aname varchar(50) NOT NULL,
     Email varchar(100) NOT NULL,
     Mobile decimal(10,0) NOT NULL,
@@ -34,7 +33,6 @@ CREATE TABLE apartmentdetail (
  	image blob NOT NULL,
     PRIMARY KEY (A_ID)
 )
-
 CREATE TABLE roomdetail(
  	R_ID int NOT NULL AUTO_INCREMENT,
 	Email varchar(100) NOT NULL,
@@ -55,6 +53,9 @@ CREATE TABLE roomdetail(
  );
 
 
+
+
+
 CREATE TABLE Buy_propertyapt(
     bapt_id int(110) NOT NULL AUTO_INCREMENT,
     A_ID int(110) NOT NULL,
@@ -72,7 +73,8 @@ CREATE TABLE Buy_propertyapt(
     primary key(bapt_id),
     foreign key(A_ID) references apartmentdetail(A_ID)
 );
-
 INSERT INTO accounts (id, username, fullname,email,mobile,password,cpassword) VALUES (1, 'admin', 'admin','admin@gmail.com','1234567890','admin','admin');
 
-Select * from Buy_property;
+Select * from Buy_propertyapt;
+
+

@@ -25,7 +25,7 @@
       <ul class="nav sidebar-nav">
         <div class="sidebar-header">
             <div class="sidebar-brand">
-              <a href="/">Home</a>
+              <a href="/"><img class="logo31" src="{{url_for('static',filename='./images/logo3.jpg')}}" alt="">Home</a>
             </div>
         </div>
         <li><a href="/userdashboard">Dashboard</a></li>
@@ -33,7 +33,7 @@
         <a href="#" class="dropdown-toggle"  data-toggle="dropdown">User <span class="caret"></span></a>
       <ul class="dropdown-menu animated fadeInLeft" role="menu">
              <div class="dropdown-header">{{username}}</div>
-             <div class="dropdown-header">{{email}}</div>
+             <li class="dropdown-header">{{email1}}</li>
        <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
        </ul>
        </li>

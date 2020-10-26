@@ -176,11 +176,13 @@ def login():
                     session['loggedin'] = True
                     session['id'] = account['id']
                     session['username'] = account['username']
+                    session['email1'] = account['email']
                     return redirect(url_for('dashboard'))
                 else:
                     session['loggedin'] = True
                     session['id'] = account['id']
                     session['username'] = account['username']
+                    session['email1'] = account['email']
                     return redirect(url_for('userdashboard'))
             else:
                 msg = 'Incorrect username/password!'
@@ -194,6 +196,7 @@ def logout():
     session.pop('loggedin', None)
     session.pop('id', None)
     session.pop('username', None)
+    session.pop('email1', None)
     return redirect(url_for('login'))
 
 
@@ -248,14 +251,14 @@ def register():
 def dashboard():
     if 'loggedin' in session:
         # return render_template('dashboard.html', username=session['username'])
-        return render_template('dashboard.html', username='admin')
+        return render_template('dashboard.html', username='admin', email1=session['email1'])
     return redirect(url_for('login'))
 
 
 @app.route("/userdashboard/")
 def userdashboard():
     if 'loggedin' in session:
-        return render_template('userdashboard.html', username=session['username'])
+        return render_template('userdashboard.html', username=session['username'], email1=session['email1'])
     return redirect(url_for('login'))
 
 
@@ -266,7 +269,7 @@ def registeredusers():
         resultValue = cur.execute("SELECT * FROM accounts")
         if resultValue > 0:
             userDetails = cur.fetchall()
-            return render_template('registeredusers.html', userDetails=userDetails, username=session['username'])
+            return render_template('registeredusers.html', userDetails=userDetails, username=session['username'], email1=session['email1'])
 
 
 @app.route('/userdashboard/apmt_reg/', methods=['GET', 'POST'])
@@ -302,7 +305,7 @@ def apmt_reg():
         mysql.connection.commit()
         cur.close()
         # msg = 'Registration Successful! Thank You !'
-    return render_template('Apmt_reg.html', username=session['username'])
+    return render_template('Apmt_reg.html', username=session['username'], email1=session['email1'])
 
 
 @app.route('/userdashboard/room_reg/', methods=['GET', 'POST'])
@@ -335,7 +338,7 @@ def room_reg():
         mysql.connection.commit()
         cur.close()
         # msg = 'Registration Successful! Thank You !'
-    return render_template('roomreg.html', username=session['username'])
+    return render_template('roomreg.html', username=session['username'],  email1=session['email1'])
 
 
 
@@ -376,7 +379,7 @@ def Buy_property(id):
                     mysql.connection.commit()
                     cursor.close()
                     msg = 'You have successfully registered !'
-                    return render_template("index.html",username=session['username'])
+                    return render_template("index.html",username=session['username'], email1=session['email1'])
             else:
                 msg = 'Please fill out the form !'
             #return render_template("Buy_property.html",msg=msg, username=session['username'])
@@ -384,7 +387,7 @@ def Buy_property(id):
         cur.execute('SELECT Aname from apartmentdetail where A_ID=%s', [id,])
         data = cur.fetchall()
         cur.close()
-        return render_template("Buy_property.html",datas=data,msg=msg,id=id,username=session['username'])
+        return render_template("Buy_property.html",datas=data,msg=msg,id=id,username=session['username'], email1=session['email1'])
 
     else:
         return redirect(url_for('login'))

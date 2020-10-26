@@ -9,7 +9,18 @@ html { height: 100%;}
 .nav .open > a:hover,
 .nav .open > a:focus {background-color: transparent;}
 
+.logo31{
+  height: 40px;
+  border-radius: 60%;
+}
+#s1{
 
+    font-weight: bolder;
+    font-family: Georgia, 'Times New Roman', Times, serif ;
+    font-style: inherit;
+
+    color: #1c1c1c;
+}
 #wrapper {
   padding-left: 0;
   -webkit-transition: all 0.5s ease;

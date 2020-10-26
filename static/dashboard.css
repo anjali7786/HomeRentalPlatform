@@ -2,7 +2,15 @@ body {
   position: relative;
   overflow-x: hidden;
   background-color: #CFD8DC;
+  background-image :url('./images/dbg4.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+
+    width: 100%;
+    height: 100%;
+
 }
+
 body,
 html { height: 100%;}
 .nav .open > a,
@@ -10,13 +18,26 @@ html { height: 100%;}
 .nav .open > a:focus {background-color: transparent;}
 
 #s1{
-    background-color: gold;
+
     font-weight: bolder;
+    font-family: Georgia, 'Times New Roman', Times, serif ;
+    font-style: inherit;
+    font-size: larger;
+    color: crimson;
+}
+#s2{
+
+   font-weight: bolder;
+    font-family: cursive;
     font-style: normal;
     font-size: larger;
+    color: darkviolet;
 }
 
-
+.logo31{
+  height: 40px;
+  border-radius: 60%;
+}
 
 #wrapper {
   padding-left: 0;
