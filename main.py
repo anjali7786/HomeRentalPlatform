@@ -340,7 +340,135 @@ def room_reg():
         # msg = 'Registration Successful! Thank You !'
     return render_template('roomreg.html', username=session['username'],  email1=session['email1'])
 
+@app.route('/complaints/<string:id>', methods=['GET', 'POST'])
+def complaints(id):
+    msg = ''
+    if request.method == 'POST':
+        # fetch data
+        data = request.form
+        A_ID = data['A_ID']
+        apmtname = data['name']
+        complaint = data['complaint']
+        if len(A_ID) > 0 and len(apmtname) > 0 and len(complaint) > 0 :
+             cur = mysql.connection.cursor()
+             cur.execute("INSERT INTO complaints VALUES(NULL, %s, %s, %s)",
+                        (A_ID,apmtname, complaint))
+             mysql.connection.commit()
+             cur.close()
+             msg = '   A complaint has been successfully registered'
+             return render_template('complaints.html',msg=msg,id=id,username=session['username'],email1=session['email1'])
+        else:
+            msg = '   Please fill out the form !'
 
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT Aname from apartmentdetail where A_ID=%s', [id,])
+    data = cursor.fetchall()
+    cursor.close()
+    return render_template("complaints.html",datas=data,msg=msg,id=id,username=session['username'])
+
+@app.route('/complaints2/<string:id>', methods=['GET', 'POST'])
+def complaints2(id):
+    msg = ''
+    if request.method == 'POST':
+        # fetch data
+        data = request.form
+        R_ID = data['R_ID']
+        complaint = data['complaint']
+        if len(R_ID) > 0 and len(complaint) > 0 :
+             cur = mysql.connection.cursor()
+             cur.execute("INSERT INTO complaints2 VALUES(NULL, %s, %s)",
+                        (R_ID, complaint))
+             mysql.connection.commit()
+             cur.close()
+             msg = '   A complaint has been successfully registered'
+             return render_template('complaints2.html',msg=msg,id=id,username=session['username'])
+        else:
+            msg = '   Please fill out the form !'
+
+    return render_template("complaints2.html",msg=msg,id=id,username=session['username'])
+
+@app.route('/editapart/<string:id>', methods=['GET', 'POST'])
+def editapart(id):
+    msg = ''
+    if request.method == 'POST':
+        # fetch data
+        details = request.form
+        apmtname = details['name']
+        email = details['Email']
+        mobile = details['Mobile']
+        plot_no = details['Plot']
+        address = details['Address']
+        landmark = details['Landmark']
+        city = details['City']
+        pin = details['Pincode']
+        state = details['State']
+        country = details['Country']
+        atype = details['Atype']
+        rs = details['Rent/Sale']
+        availability = details['status']
+        Price = details['Price']
+        facilities = details['Facilities']
+        description = details['Description']
+        file = request.files['file']
+        extension = os.path.splitext(file.filename)
+        f_name = str(uuid.uuid4()) + str(extension)
+        app.config['UPLOAD_FOLDER'] = 'static/Uploads'
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
+        if len(apmtname) > 0 and len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(landmark) > 0 and len(city) > 0 and len(pin) > 0 and len(state) > 0 and len(country) > 0 and len(atype) > 0 and len(facilities) > 0:
+             cur = mysql.connection.cursor()
+             cur.execute("UPDATE apartmentdetail SET Aname=%s, Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Atype=%s,RS=%s, Availability=%s,Price=%s,Facilities=%s,Descrption=%s,image=%s WHERE A_ID=%s", [apmtname,email,mobile,plot_no,address,landmark,city,pin,state,country,atype,rs,availability,Price,facilities,description,file,id,])
+             mysql.connection.commit()
+             cur.close()
+             msg = ' Details have been successfully updated'
+             return render_template("editapart.html",msg=msg,id=id,username=session['username'])
+        else:
+            msg = ' Please fill out the form !' 
+
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * from apartmentdetail where A_ID=%s', [id,])
+    data = cursor.fetchall()
+    cursor.close()
+    return render_template("editapart.html",datas=data,msg=msg,id=id,username=session['username'])
+
+@app.route('/editroom/<string:id>', methods=['GET', 'POST'])
+def editroom(id):
+    msg = ''
+    if request.method == 'POST':
+        # fetch data
+        details = request.form
+        email = details['Email']
+        mobile = details['Mobile']
+        plot_no = details['Plot']
+        address = details['Address']
+        landmark = details['Landmark']
+        city = details['City']
+        pin = details['Pincode']
+        state = details['State']
+        country = details['Country']
+        availability = details['status']
+        Rent = details['Rent']
+        facilities = details['Facilities']
+        description = details['Description']
+        file = request.files['file']
+        extension = os.path.splitext(file.filename)
+        f_name = str(uuid.uuid4()) + str(extension)
+        app.config['UPLOAD_FOLDER'] = 'static/Uploads'
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
+        if len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(landmark) > 0 and len(city) > 0 and len(pin) > 0 and len(state) > 0 and len(country) > 0 and len(facilities) > 0:
+             cur = mysql.connection.cursor()
+             cur.execute("UPDATE roomdetail SET Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Availability=%s,Rent=%s,Facilities=%s,Descrption=%s,image=%s WHERE R_ID=%s", [email,mobile,plot_no,address,landmark,city,pin,state,country,availability,Rent,facilities,description,file,id,])
+             mysql.connection.commit()
+             cur.close()
+             msg = ' Details have been successfully updated'
+             return render_template("editroom.html",msg=msg,id=id,username=session['username'])
+        else:
+            msg = ' Please fill out the form !' 
+
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * from roomdetail where R_ID=%s', [id,])
+    data = cursor.fetchall()
+    cursor.close()
+    return render_template("editroom.html",datas=data,msg=msg,id=id,username=session['username'])
 
 @app.route("/Buy_property/<string:id>",methods =['GET', 'POST'])
 def Buy_property(id):
@@ -391,6 +519,42 @@ def Buy_property(id):
 
     else:
         return redirect(url_for('login'))
+
+@app.route("/details/")
+def details():
+    if 'loggedin' in session:
+        return render_template('details.html', username='admin')
+    return redirect(url_for('login'))
+
+@app.route("/apartments/")
+def apartments():
+    if 'loggedin' in session:
+        cur = mysql.connection.cursor()
+        resultValue = cur.execute("SELECT * FROM apartmentdetail")
+        if resultValue > 0:
+            apartDetails = cur.fetchall()
+            return render_template('apartments.html', apartDetails=apartDetails,username=session['username'])
+
+@app.route("/rooms/")
+def rooms():
+    if 'loggedin' in session:
+        cur = mysql.connection.cursor()
+        resultValue = cur.execute("SELECT * FROM roomdetail")
+        if resultValue > 0:
+            roomDetails = cur.fetchall()
+            return render_template('rooms.html', roomDetails=roomDetails,username=session['username'])
+
+@app.route("/complaintlist/")
+def complaintlist():
+    if 'loggedin' in session:
+        cur = mysql.connection.cursor()
+        cursor = mysql.connection.cursor()
+        resultValue = cur.execute("SELECT * FROM complaints")
+        resultValue2 = cursor.execute("SELECT * FROM complaints2")
+        if resultValue > 0 or resultValue2 > 0:
+            complain1Details = cur.fetchall()
+            complain2Details = cursor.fetchall()
+            return render_template('complaintlist.html', complain1Details=complain1Details,complain2Details=complain2Details,username=session['username'])
 
 
     #return render_template('Buy_property.html', msg=msg,username=session['username'])

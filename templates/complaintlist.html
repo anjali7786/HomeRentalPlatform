@@ -11,7 +11,7 @@
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
    <link rel="stylesheet" href="{{url_for('static',filename='registeredusers.css')}}">
-   <title>Registeredusers</title>
+   <title>Complaints List</title>
   </head>
   <body>
 
@@ -25,7 +25,7 @@
       <ul class="nav sidebar-nav">
         <div class="sidebar-header">
          <div class="sidebar-brand">
-          <a href="/"><img class="logo31" src="{{url_for('static',filename='./images/logo3.jpg')}}" alt="">Home</a>
+          <a href="/home">Home</a>
          </div>
         </div>
         <li><a href="{{url_for('dashboard')}}">Dashboard</a></li>
@@ -33,7 +33,6 @@
         <a href="#" class="dropdown-toggle"  data-toggle="dropdown">User <span class="caret"></span></a>
       <ul class="dropdown-menu animated fadeInLeft" role="menu">
        <div class="dropdown-header">{{username}}</div>
-          <li class="dropdown-header">{{email1}}</li>
        <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
        </ul>
        </li>
@@ -52,32 +51,52 @@
                  <div class="row">
                      <div class="col-lg-8 col-lg-offset-2">
                         <div id="s1">
-                            <h1>List of Registered Users</h1>
+                            <h1>List of Complaints</h1>
                         </div>
                         <div class="table-responsive">
                         <table  class="table table-borderless table-hover table-light">
                         <thead class="thead-dark">
                         <tr>
                         <th>ID</th>
-                            <th>USERNAME</th>
-                            <th>FULLNAME</th>
-                            <th>EMAIL</th>
-                            <th>MOBILE</th>
+                        <th>APARTMENT ID</th>
+                        <th>PROPERTY NAME</th>
+                        <th>COMPLAINT</th>
                         </tr>
                         </thead>
                             <tbody>
-                            {% for user in userDetails %}
+                            {% for c in complain1Details %}
                             <tr>
-                                <td> {{user[0]}} </td>
-                                <td> {{user[1]}} </td>
-                                <td> {{user[2]}} </td>
-                                <td> {{user[3]}} </td>
-                                <td> {{user[4]}} </td>
+                                <td> {{c[0]}} </td>
+                                <td> {{c[1]}} </td>
+                                <td> {{c[2]}} </td>
+                                <td> {{c[3]}} </td>
                             </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                         </div>
+                        <br>
+                        <br>
+                        <div class="table-responsive">
+                            <table  class="table table-borderless table-hover table-light">
+                            <thead class="thead-dark">
+                            <tr>
+                            <th>ID</th>
+                            <th>ROOM ID</th>
+                            <th>COMPLAINT</th>
+                            </tr>
+                            </thead>
+                                <tbody>
+                                {% for c in complain2Details %}
+                                <tr>
+                                    <td> {{c[0]}} </td>
+                                    <td> {{c[1]}} </td>
+                                    <td> {{c[2]}} </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            </div>
                      </div>
                  </div>
              </div>
