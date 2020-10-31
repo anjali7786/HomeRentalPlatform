@@ -26,16 +26,17 @@
     <div class="overlay"></div>
 
 
-     <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
+    <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
       <ul class="nav sidebar-nav">
         <div class="sidebar-header">
         <div class="sidebar-brand">
-          <a href="/home">Home</a></div></div>
-        <li><a href="{{url_for('dashboard')}}">Dashboard</a></li>
+          <a href="/"><img class="logo31" src="{{url_for('static',filename='./images/logo3.jpg')}}" alt="">Home</a></div></div>
+        <li><a href="#">Dashboard</a></li>
         <li class="dropdown">
         <a href="#" class="dropdown-toggle"  data-toggle="dropdown">User <span class="caret"></span></a>
       <ul class="dropdown-menu animated fadeInLeft" role="menu">
        <div class="dropdown-header">{{username}}</div>
+          <li class="dropdown-header">{{email1}}</li>
        <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
        </ul>
        </li>
@@ -65,7 +66,7 @@
 	<label for="Mobile"><b>Mobile No.</b></label><br>
 		<input aria-labelledby="Areg" type="number" class="form-control" placeholder="Mobile" id="Mobile" name="Mobile" value="{{i[2]}}" required><br>
 	<label for="Plot"><b>Plot Number</b></label><br>
-		<input aria-labelledby="Areg" type="number" class="form-control" placeholder="Plot Number" id="Plot" name="Plot" value="{{i[3]}}" required><br>
+		<input aria-labelledby="Areg" type="text" class="form-control" placeholder="Room Number" id="Plot" name="Plot" value="{{i[3]}}" required><br>
 	<label for="Address"><b>Address</b></label><br>
 		<input  aria-labelledby="Areg" type="text" class="form-control" placeholder="Enter your Address" id="Address" name="Address" value="{{i[4]}}" required><br>
 	<label for="Landmark"><b>Landmark</b></label><br>

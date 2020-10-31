@@ -39,7 +39,8 @@
        </li>
 
           <li><a href="/userdashboard/apmt_reg/">Register</a></li>
-          <li><a href="#">Details/Update</a></li>
+          <li><a href="{{ url_for('makecomp') }}">Make Complaints</a></li>
+          <li><a href="{{ url_for('approval') }}">Approve </a></li>
        </ul>
    </nav>
 
@@ -55,12 +56,22 @@
                          <div id="s1">
                              <h1>DASHBOARD</h1>
                          </div>
-                         <div id="s2">
-                             <a href="#">Registered Rooms</a>
-                         </div>
-
-
-                     </div>
+                         <div>
+                            <h2>Notifications</h2>
+                        </div>
+                        {% for r in rental %}
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            {{r[1]}} has applied for your registered apartment {{r[0]}} !  <a href="{{ url_for('approval') }}" class="alert-link">View</a>
+                          </div>
+                        {% endfor %}  
+                        {% for o in outcome %}
+                        <div class="alert alert-info alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                              Your Application for apartment {{o[0]}} has been approved!
+                          </div>
+                        {% endfor %} 
+                    </div>
                  </div>
              </div>
          </div>

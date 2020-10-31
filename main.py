@@ -83,55 +83,59 @@ def home():
         elif option=="rooms":
             op="r"
             if loc=="" and city=="" and minprice=="" and maxprice=="":
-                cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail')
+
+                cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail')
                 result = cur.fetchall()
             elif loc!="":
                 if city=="" and minprice=="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where State = % s',[loc])
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s',[loc])
                     result = cur.fetchall()
                 elif city!="" and minprice=="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where State = % s and City = %s',([loc],[city]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City = %s',([loc],[city]))
                     result = cur.fetchall()
                 elif city!="" and minprice!="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where State = % s and City = %s and Rent>=%s',([loc], [city],[minprice]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City = %s and Rent>=%s',([loc], [city],[minprice]))
                     result = cur.fetchall()
                 elif city!="" and minprice=="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where State = % s and City = %s and Rent<=%s',([loc], [city],[maxprice]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City = %s and Rent<=%s',([loc], [city],[maxprice]))
                     result = cur.fetchall()
                 elif city=="" and minprice=="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where State = % s and Rent<=%s',([loc],[maxprice]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and Rent<=%s',([loc],[maxprice]))
                     result = cur.fetchall()
                 elif city=="" and minprice!="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where State = % s and Rent<=%s',([loc],[maxprice]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and Rent<=%s',([loc],[maxprice]))
                     result = cur.fetchall()
                 elif city=="" and minprice!="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where State = % s and Rent>=%s and Rent<=%s',([loc], [minprice],[maxprice]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and Rent>=%s and Rent<=%s',([loc], [minprice],[maxprice]))
                     result = cur.fetchall()
                 elif city!="" and minprice!="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where State = % s and City=%s and Rent>=%s and Rent<=%s',([loc],[city], [minprice],[maxprice]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City=%s and Rent>=%s and Rent<=%s',([loc],[city], [minprice],[maxprice]))
                     result = cur.fetchall()
             elif city!="" and loc=="":
                 if minprice=="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where City = % s',[city])
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s',[city])
                     result = cur.fetchall()
                 elif minprice=="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where City = % s and Rent<=%s',([city],[maxprice]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s and Rent<=%s',([city],[maxprice]))
                     result = cur.fetchall()
                 elif minprice!="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where City = % s and Rent<=%s',([city],[maxprice]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s and Rent<=%s',([city],[maxprice]))
                     result = cur.fetchall()
                 elif minprice!="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where City = % s and Rent>=%s and Price<=%s',([city], [minprice],[maxprice]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s and Rent>=%s and Price<=%s',([city], [minprice],[maxprice]))
                     result = cur.fetchall()
             elif city=="" and loc=="":
                 if minprice=="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where Rent<=%s',([maxprice]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent<=%s',([maxprice]))
                     result = cur.fetchall()
                 elif minprice!="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where Rent>=%s',([minprice]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent>=%s',([minprice]))
                     result = cur.fetchall()
                 elif minprice!="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Descrption,image,Rent FROM roomdetail where Rent>=%s and Rent<=%s',([minprice],[maxprice]))
+                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent>=%s and Rent<=%s',([minprice],[maxprice]))
+=======
+                
+
                     result = cur.fetchall()
         mysql.connection.commit()
         cur.close()
@@ -258,7 +262,16 @@ def dashboard():
 @app.route("/userdashboard/")
 def userdashboard():
     if 'loggedin' in session:
-        return render_template('userdashboard.html', username=session['username'], email1=session['email1'])
+        cur = mysql.connection.cursor()
+        cursor = mysql.connection.cursor()
+        resultValue = cur.execute("SELECT Aname,Fullname FROM Buy_propertyapt where Username=%s",[session['username'],])
+        result = cursor.execute("SELECT Aname FROM approved where Applicant=%s",[session['username'],])
+        if resultValue > 0 or result > 0:
+            rental = cur.fetchall()
+            outcome = cursor.fetchall()
+            return render_template('userdashboard.html', rental=rental,outcome=outcome,username=session['username'], email1=session['email1'])
+        else :
+            return render_template('userdashboard.html', username=session['username'], email1=session['email1'])
     return redirect(url_for('login'))
 
 
@@ -300,8 +313,8 @@ def apmt_reg():
         app.config['UPLOAD_FOLDER'] = 'static/Uploads'
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO apartmentdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (apmtname, email, mobile, plot_no, address, landmark, city, pin, state, country, atype, rs, availability,Price,facilities,description,file))
+        cur.execute("INSERT INTO apartmentdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                    (apmtname, email, mobile, plot_no, address, landmark, city, pin, state, country, atype, rs, availability,Price,facilities,description,file,session['username']))
         mysql.connection.commit()
         cur.close()
         # msg = 'Registration Successful! Thank You !'
@@ -333,59 +346,63 @@ def room_reg():
         app.config['UPLOAD_FOLDER'] = 'static/Uploads'
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO roomdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (email, mobile, plot_no, address, landmark, city, pin, state, country, availability, rent, facilities, description, file))
+        cur.execute("INSERT INTO roomdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)",
+                    (email, mobile, plot_no, address, landmark, city, pin, state, country, availability, rent, facilities, description, file,session['username']))
         mysql.connection.commit()
         cur.close()
         # msg = 'Registration Successful! Thank You !'
     return render_template('roomreg.html', username=session['username'],  email1=session['email1'])
 
-@app.route('/complaints/<string:id>', methods=['GET', 'POST'])
-def complaints(id):
+@app.route('/complaints/', methods=['GET', 'POST'])
+def complaints():
     msg = ''
     if request.method == 'POST':
         # fetch data
         data = request.form
-        A_ID = data['A_ID']
         apmtname = data['name']
         complaint = data['complaint']
-        if len(A_ID) > 0 and len(apmtname) > 0 and len(complaint) > 0 :
+        if len(apmtname) > 0 and len(complaint) > 0 :
+             cursor1 = mysql.connection.cursor()
+             cursor1.execute('SELECT A_ID from apartmentdetail where Aname=%s and Username=%s', [apmtname,session['username'],])
+             A_ID = cursor1.fetchall()
+             cursor1.close()
              cur = mysql.connection.cursor()
-             cur.execute("INSERT INTO complaints VALUES(NULL, %s, %s, %s)",
-                        (A_ID,apmtname, complaint))
+             cur.execute("INSERT INTO complaints VALUES(NULL, %s, %s, %s,%s)",
+                        (A_ID,apmtname, complaint,session['username']))
              mysql.connection.commit()
              cur.close()
              msg = '   A complaint has been successfully registered'
-             return render_template('complaints.html',msg=msg,id=id,username=session['username'],email1=session['email1'])
+             return render_template('complaints.html',msg=msg,username=session['username'],email1=session['email1'])
         else:
             msg = '   Please fill out the form !'
+    return render_template("complaints.html",msg=msg,username=session['username'])
 
-    cursor = mysql.connection.cursor()
-    cursor.execute('SELECT Aname from apartmentdetail where A_ID=%s', [id,])
-    data = cursor.fetchall()
-    cursor.close()
-    return render_template("complaints.html",datas=data,msg=msg,id=id,username=session['username'])
-
-@app.route('/complaints2/<string:id>', methods=['GET', 'POST'])
-def complaints2(id):
+@app.route('/complaints2/', methods=['GET', 'POST'])
+def complaints2():
     msg = ''
     if request.method == 'POST':
         # fetch data
         data = request.form
-        R_ID = data['R_ID']
+        Room_no = data['Plot']
         complaint = data['complaint']
-        if len(R_ID) > 0 and len(complaint) > 0 :
+        if len(Room_no) > 0 and len(complaint) > 0 :
+             cursor1 = mysql.connection.cursor()
+             cursor1.execute('SELECT R_ID from roomdetail where Room_no=%s and Username=%s',[Room_no,session['username'],])
+             data = cursor1.fetchall()
+             cursor1.close()
              cur = mysql.connection.cursor()
-             cur.execute("INSERT INTO complaints2 VALUES(NULL, %s, %s)",
-                        (R_ID, complaint))
+             for i in data :
+                 cur.execute("INSERT INTO complaints2 VALUES(NULL, %s, %s, %s,%s)",
+                        (i[0],Room_no,complaint,session['username'])) 
+             
              mysql.connection.commit()
              cur.close()
              msg = '   A complaint has been successfully registered'
-             return render_template('complaints2.html',msg=msg,id=id,username=session['username'])
+             return render_template('complaints2.html',msg=msg,username=session['username'])
         else:
             msg = '   Please fill out the form !'
 
-    return render_template("complaints2.html",msg=msg,id=id,username=session['username'])
+    return render_template("complaints2.html",msg=msg,username=session['username'])
 
 @app.route('/editapart/<string:id>', methods=['GET', 'POST'])
 def editapart(id):
@@ -416,7 +433,7 @@ def editapart(id):
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
         if len(apmtname) > 0 and len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(landmark) > 0 and len(city) > 0 and len(pin) > 0 and len(state) > 0 and len(country) > 0 and len(atype) > 0 and len(facilities) > 0:
              cur = mysql.connection.cursor()
-             cur.execute("UPDATE apartmentdetail SET Aname=%s, Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Atype=%s,RS=%s, Availability=%s,Price=%s,Facilities=%s,Descrption=%s,image=%s WHERE A_ID=%s", [apmtname,email,mobile,plot_no,address,landmark,city,pin,state,country,atype,rs,availability,Price,facilities,description,file,id,])
+             cur.execute("UPDATE apartmentdetail SET Aname=%s, Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Atype=%s,RS=%s, Availability=%s,Price=%s,Facilities=%s,Dscrption=%s,image=%s WHERE A_ID=%s", [apmtname,email,mobile,plot_no,address,landmark,city,pin,state,country,atype,rs,availability,Price,facilities,description,file,id,])
              mysql.connection.commit()
              cur.close()
              msg = ' Details have been successfully updated'
@@ -456,7 +473,7 @@ def editroom(id):
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
         if len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(landmark) > 0 and len(city) > 0 and len(pin) > 0 and len(state) > 0 and len(country) > 0 and len(facilities) > 0:
              cur = mysql.connection.cursor()
-             cur.execute("UPDATE roomdetail SET Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Availability=%s,Rent=%s,Facilities=%s,Descrption=%s,image=%s WHERE R_ID=%s", [email,mobile,plot_no,address,landmark,city,pin,state,country,availability,Rent,facilities,description,file,id,])
+             cur.execute("UPDATE roomdetail SET Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Availability=%s,Rent=%s,Facilities=%s,Dscrption=%s,image=%s WHERE R_ID=%s", [email,mobile,plot_no,address,landmark,city,pin,state,country,availability,Rent,facilities,description,file,id,])
              mysql.connection.commit()
              cur.close()
              msg = ' Details have been successfully updated'
@@ -500,10 +517,14 @@ def Buy_property(id):
                 elif len(Mobile) != 10:
                     msg = 'Enter 10 digit number !'
                 else:
+                    cursor1 = mysql.connection.cursor()
+                    cursor1.execute('SELECT Username from apartmentdetail where A_ID=%s', [A_ID,])
+                    user = cursor1.fetchall()
+                    cursor1.close()
                     cursor.execute(
-                        'INSERT INTO Buy_propertyapt VALUES (NULL, % s, % s, % s, % s, % s, % s, %s, %s, %s, %s, %s, %s)',
+                        'INSERT INTO Buy_propertyapt VALUES (NULL, % s, % s, % s, % s, % s, % s, %s, %s, %s, %s, %s, %s, %s,%s)',
                         (A_ID, Aname, Fullname, Email, Mobile, Plot_no, Address, Landmark, City, Pincode, State,
-                         Country))
+                         Country,user[0],session['username']))
                     mysql.connection.commit()
                     cursor.close()
                     msg = 'You have successfully registered !'
@@ -526,23 +547,116 @@ def details():
         return render_template('details.html', username='admin')
     return redirect(url_for('login'))
 
+@app.route("/makecomp/")
+def makecomp():
+    if 'loggedin' in session:
+        return render_template('makecomp.html', username='admin')
+    return redirect(url_for('login'))
+
 @app.route("/apartments/")
 def apartments():
+    msg = ''
     if 'loggedin' in session:
         cur = mysql.connection.cursor()
         resultValue = cur.execute("SELECT * FROM apartmentdetail")
         if resultValue > 0:
             apartDetails = cur.fetchall()
-            return render_template('apartments.html', apartDetails=apartDetails,username=session['username'])
+            return render_template('apartments.html',msg=msg, apartDetails=apartDetails,username=session['username'])
+        else:
+            msg ='There are no Apartments for rent as of now'
+            return render_template('apartments.html', msg=msg,username=session['username'])
+        cur.close()
+
+
+@app.route("/delete1/<string:id>")
+def delete1(id):
+    msg=''
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM apartmentdetail where A_ID=%s",[id,])
+    mysql.connection.commit()
+    cursor.close()  
+    cur1 = mysql.connection.cursor()
+    resultValue = cur1.execute("SELECT * FROM apartmentdetail")
+    if resultValue > 0:
+        apartDetails = cur1.fetchall()
+        return render_template('apartments.html',msg=msg, apartDetails=apartDetails,username=session['username'])
+    else:
+        msg ='There are no Apartments for rent as of now'
+        return render_template('apartments.html', msg=msg,username=session['username'])
+    cur1.close()  
+
+@app.route("/delete2/<string:id>")
+def delete2(id):
+    msg=''
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM roomdetail where R_ID=%s",[id,])
+    mysql.connection.commit()
+    cursor.close()  
+    cur1 = mysql.connection.cursor()
+    resultValue = cur1.execute("SELECT * FROM roomdetail")
+    if resultValue > 0:
+        roomDetails = cur1.fetchall()
+        return render_template('rooms.html',msg=msg, roomDetails=roomDetails,username=session['username'])
+    else:
+        msg ='There are no Rooms for rent as of now'
+        return render_template('rooms.html', msg=msg,username=session['username'])
+    cur1.close()
 
 @app.route("/rooms/")
 def rooms():
+    msg = ''
     if 'loggedin' in session:
         cur = mysql.connection.cursor()
         resultValue = cur.execute("SELECT * FROM roomdetail")
         if resultValue > 0:
             roomDetails = cur.fetchall()
-            return render_template('rooms.html', roomDetails=roomDetails,username=session['username'])
+            return render_template('rooms.html', msg=msg,roomDetails=roomDetails,username=session['username'])
+        else:
+            msg ='There are no Rooms for rent as of now'
+            return render_template('rooms.html', msg=msg,username=session['username'])
+
+@app.route("/approval/")
+def approval():
+    msg = ''
+    if 'loggedin' in session:
+        cur = mysql.connection.cursor()
+        resultValue = cur.execute("SELECT * FROM Buy_propertyapt where Username=%s",[session['username'],])
+        if resultValue > 0:
+            apply = cur.fetchall()
+            cursor = mysql.connection.cursor()
+            result = cursor.execute("SELECT Aname FROM Buy_propertyapt GROUP BY Aname")
+            apply2= cursor.fetchall()
+            return render_template('approval.html',msg=msg, apply2=apply2,apply=apply,username=session['username'])
+            cursor.close()
+        else:
+            msg ='There are no applicants for any of your registered apartments'
+            return render_template('approval.html', msg=msg,username=session['username'])
+        cur.close()
+
+@app.route("/approve/<string:id>/<Aname>/<Fullname>")
+def approve(id,Aname,Fullname):
+    msg=''
+    cur1 = mysql.connection.cursor()
+    cur1.execute("INSERT INTO approved VALUES (NULL, %s, %s)",[Aname,Fullname,])
+    mysql.connection.commit()
+    cur1.close() 
+    cursor = mysql.connection.cursor()
+    cursor.execute("DELETE FROM Buy_propertyapt where A_ID=%s",[id,])
+    mysql.connection.commit()
+    cursor.close()  
+    cur = mysql.connection.cursor()
+    resultValue = cur.execute("SELECT * FROM Buy_propertyapt where Username=%s",[session['username'],])
+    if resultValue > 0:
+        apply = cur.fetchall()
+        cursor1 = mysql.connection.cursor()
+        result = cursor1.execute("SELECT Aname FROM Buy_propertyapt GROUP BY Aname")
+        apply2= cursor1.fetchall()
+        return render_template('approval.html',msg=msg, apply2=apply2,apply=apply,username=session['username'])
+        cursor1.close()
+    else:
+        msg ='There are no applicants for any of your registered apartments'
+        return render_template('approval.html', msg=msg,username=session['username'])
+    cur.close()
 
 @app.route("/complaintlist/")
 def complaintlist():

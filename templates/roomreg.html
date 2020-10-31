@@ -40,8 +40,9 @@
        <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
        </ul>
        </li>
-          <li><a href="#">Details/Update</a></li>
-       <li><a href="#">Complaints</a></li>
+       <li><a href="/userdashboard/apmt_reg/">Register</a></li>
+       <li><a href="{{ url_for('makecomp') }}">Make Complaints</a></li>
+       <li><a href="{{ url_for('approval') }}">Approve </a></li>
       </ul>
    </nav>
 
@@ -76,8 +77,8 @@
 			<input aria-labelledby="Areg" type="email" class="form-control" placeholder="Email" id="email" name="Email" required><br>
 		<label for="Mobile"><b>Mobile No.</b></label><br>
 			<input aria-labelledby="Areg" type="number" class="form-control" placeholder="10 Digit Mobile Number" id="Mobile" name="Mobile" required><br>
-		<label for="Plot"><b>Plot Number</b></label><br>
-			<input aria-labelledby="Areg" type="number" class="form-control" placeholder="Plot Number" id="Plot" name="Plot" required><br>
+		<label for="Plot"><b>Room Number</b></label><br>
+			<input aria-labelledby="Areg" type="text" class="form-control" placeholder="Room Number" id="Plot" name="Plot" required><br>
 		<label for="Address"><b>Address</b></label><br>
 			<input  aria-labelledby="Areg" type="text" class="form-control" placeholder="Enter your Address" id="Address" name="Address" required><br>
 		<label for="Landmark"><b>Landmark</b></label><br>

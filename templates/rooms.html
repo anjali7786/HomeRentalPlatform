@@ -77,11 +77,12 @@
                      Description: {{r[13]}} <br>
                    <br>
                    <a href="{{url_for('editroom',id=r[0])}}"><button class="btn btn-primary badge-pill" style="width:80px">EDIT</button></a>
-                   <a href="{{url_for('complaints2',id=r[0])}}"><button class="btn btn-primary badge-pill" style="width:110px" >COMPLAIN</button></a>
+                   <a href="{{url_for('delete2',id=r[0])}}"><button class="btn btn-danger badge-pill" style="width:100px">DELETE</button></a>
                     </p>
                  </div>
                 </div>
                 {% endfor %}
+                <div class="msg" style="color:rgb(24, 21, 51); justify-content:centre;">{{msg}}</div>
             </div>
                         
             
