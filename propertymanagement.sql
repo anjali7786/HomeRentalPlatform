@@ -2,8 +2,8 @@ CREATE DATABASE propertymanagement;
 
 USE propertymanagement; 
 CREATE TABLE  accounts (
-  	id int(11) NOT NULL AUTO_INCREMENT,
-  	username varchar(50) NOT NULL,
+  	  id int(11) NOT NULL AUTO_INCREMENT,
+  	  username varchar(50) NOT NULL,
       fullname varchar(50) NOT NULL,
       email varchar(50) NOT NULL,
       mobile varchar(10) NOT NULL,
@@ -29,8 +29,9 @@ CREATE TABLE apartmentdetail (
  	Availability varchar(20) NOT NULL,
 	Price numeric NOT NULL,
  	Facilities varchar(250) NOT NULL,
- 	Descrption varchar(500) NOT NULL,
+ 	Dscrption varchar(500) NOT NULL,
  	image blob NOT NULL,
+    Username varchar(50) NOT NULL,
     PRIMARY KEY (A_ID)
 );
 
@@ -39,23 +40,16 @@ C_ID int NOT NULL AUTO_INCREMENT,
 A_ID int NOT NULL,
 Aname varchar(50) NOT NULL,
 Complaint varchar(250) NOT NULL,
+Username varchar(50) NOT NULL,
 PRIMARY KEY (C_ID),
-FOREIGN KEY (A_ID) REFERENCES apartmentdetail(A_ID)
-);
-
-CREATE TABLE complaints2 (
-C_ID int NOT NULL AUTO_INCREMENT,
-R_ID int NOT NULL,
-Complaint varchar(250) NOT NULL,
-PRIMARY KEY (C_ID),
-FOREIGN KEY (R_ID) REFERENCES roomdetail(R_ID)
-);
+FOREIGN KEY (A_ID) REFERENCES apartmentdetail(A_ID) ON DELETE CASCADE
+); 
 
 CREATE TABLE roomdetail(
  	R_ID int NOT NULL AUTO_INCREMENT,
 	Email varchar(100) NOT NULL,
  	Mobile numeric(10) NOT NULL,
- 	Plot_no int NOT NULL,
+ 	Room_no varchar(50) NOT NULL,
  	Address varchar(100) NOT NULL,
  	Landmark varchar(100) NOT NULL,
  	City varchar(50) NOT NULL,
@@ -65,12 +59,21 @@ CREATE TABLE roomdetail(
  	Availability varchar(20) NOT NULL,
  	Rent numeric NOT NULL,
 	Facilities varchar(250) NOT NULL,
- 	Descrption varchar(500) NOT NULL,
+ 	Dscrption varchar(500) NOT NULL,
     image blob NOT NULL,
+    Username varchar(50) NOT NULL,
  	PRIMARY KEY (R_ID)
  );
 
-
+CREATE TABLE complaints2 (
+C_ID int NOT NULL AUTO_INCREMENT,
+R_ID int NOT NULL,
+Room_no varchar(50) NOT NULL,
+Complaint varchar(250) NOT NULL,
+Username varchar(50) NOT NULL,
+PRIMARY KEY (C_ID),
+FOREIGN KEY (R_ID) REFERENCES roomdetail(R_ID)
+);
 
 
 
@@ -81,18 +84,27 @@ CREATE TABLE Buy_propertyapt(
     Fullname varchar(50) NOT NULL,
     Email varchar(100) NOT NULL,
     Mobile decimal(10,0) NOT NULL,
-    Plot_no int NOT NULL,
+    Age int NOT NULL,
     Address varchar(100) NOT NULL,
     Landmark varchar(100) NOT NULL,
     City varchar(50) NOT NULL,
     Pincode decimal(6,0) NOT NULL,
     State varchar(50) NOT NULL,
-    Country varchar(50) NOT NULL,
+    Occupation varchar(50) NOT NULL,
+    Username varchar(50) NOT NULL,
+    Applicant varchar(50) NOT NULL,
     primary key(bapt_id),
-    foreign key(A_ID) references apartmentdetail(A_ID)
+    foreign key(A_ID) references apartmentdetail(A_ID) ON DELETE CASCADE
 );
-INSERT INTO accounts (id, username, fullname,email,mobile,password,cpassword) VALUES (1, 'admin', 'admin','admin@gmail.com','1234567890','admin','admin');
 
+CREATE TABLE approved (
+X_ID int NOT NULL AUTO_INCREMENT,
+Aname varchar(50) NOT NULL,
+Applicant varchar(50) NOT NULL,
+PRIMARY KEY (C_ID),
+);
+
+INSERT INTO accounts (id, username, fullname,email,mobile,password,cpassword) VALUES (1, 'admin', 'admin','admin@gmail.com','1234567890','admin','admin');
 Select * from Buy_propertyapt;
-Select * from roomdetail;
+Select * from apartmentdetail;
 

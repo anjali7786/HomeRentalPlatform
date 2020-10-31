@@ -14,7 +14,6 @@
 
 	<!-- Css file  -->
 	<link rel="stylesheet" href="{{url_for('static',filename='complain.css')}}">
-	<link rel="stylesheet" href="{{url_for('static',filename='dashboard.css')}}">
 
 	
 </head>
@@ -26,23 +25,28 @@
     <div class="overlay"></div>
 
 
-     <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
-      <ul class="nav sidebar-nav">
-        <div class="sidebar-header">
-        <div class="sidebar-brand">
-          <a href="/home">Home</a></div></div>
-        <li><a href="{{url_for('dashboard')}}">Dashboard</a></li>
-        <li class="dropdown">
-        <a href="#" class="dropdown-toggle"  data-toggle="dropdown">User <span class="caret"></span></a>
-      <ul class="dropdown-menu animated fadeInLeft" role="menu">
-       <div class="dropdown-header">{{username}}</div>
-       <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
-       </ul>
-       </li>
-          <li><a href="{{ url_for('details') }}">Details/Update</a></li>
-       <li><a href="{{ url_for('complaintlist') }}">Complaints</a></li>
-       </ul>
-   </nav>
+    <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
+        <ul class="nav sidebar-nav">
+          <div class="sidebar-header">
+              <div class="sidebar-brand">
+                <a href="/"><img class="logo31" src="{{url_for('static',filename='./images/logo3.jpg')}}" alt="">Home</a>
+              </div>
+          </div>
+          <li><a href="/userdashboard">Dashboard</a></li>
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle"  data-toggle="dropdown">User <span class="caret"></span></a>
+        <ul class="dropdown-menu animated fadeInLeft" role="menu">
+               <div class="dropdown-header">{{username}}</div>
+               <li class="dropdown-header">{{email1}}</li>
+         <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+         </ul>
+         </li>
+  
+            <li><a href="/userdashboard/apmt_reg/">Register</a></li>
+            <li><a href="{{ url_for('makecomp') }}">Make Complaints</a></li>
+            <li><a href="{{ url_for('approval') }}">Approve </a></li>
+         </ul>
+     </nav>
 
          <div id="page-content-wrapper">
              <button type="button" class="hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
@@ -55,17 +59,13 @@
 
 	<div class="container-fluid main">
 		<div class="col">
-           	<form id="Areg" method="POST" action="{{url_for('complaints',id=id)}}">
+           	<form id="Areg" method="POST" action="{{url_for('complaints')}}">
 				<h1 id="head">Complaints</h1>
 
 		<p>Please fill in the form to register a complaint</p><br>
         
-        <label for="A_ID"><b>Apartment ID</b></label><br>
-			<input aria-labelledby="Areg" type="number" class="form-control" placeholder="ID" id="A_ID" name="A_ID" value="{{id}}" required readonly><br>
         <label for="Aname"><b>Apartment Name</b></label><br>
-            {% for i in datas%}
-            <input aria-labelledby="Areg" type="text" class="form-control" placeholder="Apartment Name" id="Aname" name="name" value="{{i[0]}}" required readonly><br>
-            {%endfor%}
+            <input aria-labelledby="Areg" type="text" class="form-control" placeholder="Apartment Name" id="Aname" name="name" required><br>
 		<label for="complaint"><b>Please enter your complaint</b></label><br>
 			<input aria-labelledby="Areg" type="text" class="form-control" placeholder="Complaint" id="complaint" name="complaint" required><br>
         

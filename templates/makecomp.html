@@ -1,24 +1,20 @@
-<!DOCTYPE HTML>
+<!doctype html>
 <html lang="en">
+  <head>
 
-<head>
-	<meta charset="UTF-8">
-	<title>Resister Complaint</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<!-- Bootstrap CSS --> 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!-- Font-Awesome -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+    <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0,shrink-to-fit=no">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-	<!-- Css file  -->
-	<link rel="stylesheet" href="{{url_for('static',filename='complain.css')}}">
-	
-	
-</head>
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="{{url_for('static',filename='dashboard.css')}}">
+   <title>Dashboard</title>
+  </head>
+  <body>
 
-<body>
 
 
 <div id="wrapper">
@@ -44,7 +40,6 @@
   
             <li><a href="/userdashboard/apmt_reg/">Register</a></li>
             <li><a href="{{ url_for('makecomp') }}">Make Complaints</a></li>
-            <li><a href="{{ url_for('approval') }}">Approve </a></li>
          </ul>
      </nav>
 
@@ -54,38 +49,39 @@
                  <span class="hamb-middle"></span>
                  <span class="hamb-bottom"></span>
              </button>
-		 </div>
-</div>
+             <div class="container">
+                 <div class="row">
+                     <div class="col-lg-8 col-lg-offset-2">
+                         <div id="s1">
+                             <h1>Register Complaints</h1>
+                         </div>
+                         <div id="s2">
+                             <a href="{{ url_for('complaints')}}">Register a Complaint for Apartments</a>
+                         </div>
+                         <div id="s2">
+                             <a href="{{ url_for('complaints2')}}">Register a Complaint for Rooms</a>
+                         </div>
 
-	<div class="container-fluid main">
-		<div class="col">
-           	<form id="Areg" method="POST" action="{{url_for('complaints2')}}">
-				<h1 id="head">Complaints</h1>
 
-		<p>Please fill in the form to register a complaint</p><br>
-        
-        <label for="Plot"><b>Room Number</b></label><br>
-            <input aria-labelledby="Areg" type="text" class="form-control" placeholder="Room Number" id="Plot" name="Plot" required><br>
-		<label for="complaint"><b>Please enter your complaint</b></label><br>
-			<input aria-labelledby="Areg" type="text" class="form-control" placeholder="Complaint" id="complaint" name="complaint" required><br>
-        
-        <div class="msg" style="color:white; justify-content:centre;">{{msg}}</div>
-		<button  aria-labelledby="Areg" type="submit" class="btn">Submit complaint</button>
-              
-	</form>
-	</div>
-</div>
-	
+
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+
+     </div>
+
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" ></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="{{url_for('static',filename='dashboard.js')}}"></script>
-
-</body>
-	</html>
-	
+  </body>
+</html>
