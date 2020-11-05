@@ -30,7 +30,7 @@ CREATE TABLE apartmentdetail (
 	Price numeric NOT NULL,
  	Facilities varchar(250) NOT NULL,
  	Dscrption varchar(500) NOT NULL,
- 	image blob NOT NULL,
+ 	image varchar(10000) NOT NULL,
     Username varchar(50) NOT NULL,
     PRIMARY KEY (A_ID)
 );
@@ -60,7 +60,7 @@ CREATE TABLE roomdetail(
  	Rent numeric NOT NULL,
 	Facilities varchar(250) NOT NULL,
  	Dscrption varchar(500) NOT NULL,
-    image blob NOT NULL,
+    image varchar(10000) NOT NULL,
     Username varchar(50) NOT NULL,
  	PRIMARY KEY (R_ID)
  );
@@ -101,7 +101,7 @@ CREATE TABLE approved (
 X_ID int NOT NULL AUTO_INCREMENT,
 Aname varchar(50) NOT NULL,
 Applicant varchar(50) NOT NULL,
-PRIMARY KEY (C_ID),
+PRIMARY KEY (X_ID)
 );
 
 INSERT INTO accounts (id, username, fullname,email,mobile,password,cpassword) VALUES (1, 'admin', 'admin','admin@gmail.com','1234567890','admin','admin');

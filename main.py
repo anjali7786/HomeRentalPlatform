@@ -133,7 +133,7 @@ def home():
                     result = cur.fetchall()
                 elif minprice!="" and maxprice!="":
                     cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent>=%s and Rent<=%s',([minprice],[maxprice]))
-=======
+
                 
 
                     result = cur.fetchall()
@@ -308,15 +308,17 @@ def apmt_reg():
         facilities = details['Facilities']
         description = details['Description']
         file = request.files['file']
-        extension = os.path.splitext(file.filename)
-        f_name = str(uuid.uuid4()) + str(extension)
-        app.config['UPLOAD_FOLDER'] = 'static/Uploads'
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO apartmentdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (apmtname, email, mobile, plot_no, address, landmark, city, pin, state, country, atype, rs, availability,Price,facilities,description,file,session['username']))
-        mysql.connection.commit()
-        cur.close()
+        filename = secure_filename(file.filename)
+        extension = os.path.splitext(filename)
+        allowed_extensions = {'.jpg', '.png', '.jpeg'}
+        if extension[1] in allowed_extensions:
+            f_name = str(uuid.uuid4()) + str(extension[1])
+            app.config['UPLOAD_FOLDER'] = 'static/Uploads'
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO apartmentdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",(apmtname, email, mobile, plot_no, address, landmark, city, pin, state, country, atype, rs, availability, Price, facilities, description, f_name, session['username']))
+            mysql.connection.commit()
+            cur.close()
         # msg = 'Registration Successful! Thank You !'
     return render_template('Apmt_reg.html', username=session['username'], email1=session['email1'])
 
@@ -341,15 +343,19 @@ def room_reg():
         facilities = details['Facilities']
         description = details['Description']
         file = request.files['file']
-        extension = os.path.splitext(file.filename)
-        f_name = str(uuid.uuid4()) + str(extension)
-        app.config['UPLOAD_FOLDER'] = 'static/Uploads'
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO roomdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)",
-                    (email, mobile, plot_no, address, landmark, city, pin, state, country, availability, rent, facilities, description, file,session['username']))
-        mysql.connection.commit()
-        cur.close()
+        filename= secure_filename(file.filename)
+        extension = os.path.splitext(filename)
+        allowed_extensions={'.jpg','.png','.jpeg'}
+        if extension[1] in allowed_extensions:
+            f_name = str(uuid.uuid4()) + str(extension[1])
+            app.config['UPLOAD_FOLDER'] = 'static/Uploads'
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "INSERT INTO roomdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)",
+                (email, mobile, plot_no, address, landmark, city, pin, state, country, availability, rent, facilities, description, f_name, session['username']))
+            mysql.connection.commit()
+            cur.close()
         # msg = 'Registration Successful! Thank You !'
     return render_template('roomreg.html', username=session['username'],  email1=session['email1'])
 
@@ -375,7 +381,7 @@ def complaints():
              return render_template('complaints.html',msg=msg,username=session['username'],email1=session['email1'])
         else:
             msg = '   Please fill out the form !'
-    return render_template("complaints.html",msg=msg,username=session['username'])
+    return render_template("complaints.html",msg=msg,username=session['username'], email1=session['email1'])
 
 @app.route('/complaints2/', methods=['GET', 'POST'])
 def complaints2():
@@ -398,11 +404,11 @@ def complaints2():
              mysql.connection.commit()
              cur.close()
              msg = '   A complaint has been successfully registered'
-             return render_template('complaints2.html',msg=msg,username=session['username'])
+             return render_template('complaints2.html',msg=msg,username=session['username'],email1=session['email1'])
         else:
             msg = '   Please fill out the form !'
 
-    return render_template("complaints2.html",msg=msg,username=session['username'])
+    return render_template("complaints2.html",msg=msg,username=session['username'], email1=session['email1'])
 
 @app.route('/editapart/<string:id>', methods=['GET', 'POST'])
 def editapart(id):
@@ -427,25 +433,28 @@ def editapart(id):
         facilities = details['Facilities']
         description = details['Description']
         file = request.files['file']
-        extension = os.path.splitext(file.filename)
-        f_name = str(uuid.uuid4()) + str(extension)
-        app.config['UPLOAD_FOLDER'] = 'static/Uploads'
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
-        if len(apmtname) > 0 and len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(landmark) > 0 and len(city) > 0 and len(pin) > 0 and len(state) > 0 and len(country) > 0 and len(atype) > 0 and len(facilities) > 0:
-             cur = mysql.connection.cursor()
-             cur.execute("UPDATE apartmentdetail SET Aname=%s, Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Atype=%s,RS=%s, Availability=%s,Price=%s,Facilities=%s,Dscrption=%s,image=%s WHERE A_ID=%s", [apmtname,email,mobile,plot_no,address,landmark,city,pin,state,country,atype,rs,availability,Price,facilities,description,file,id,])
-             mysql.connection.commit()
-             cur.close()
-             msg = ' Details have been successfully updated'
-             return render_template("editapart.html",msg=msg,id=id,username=session['username'])
-        else:
-            msg = ' Please fill out the form !' 
+        filename = secure_filename(file.filename)
+        extension = os.path.splitext(filename)
+        allowed_extensions = {'.jpg', '.png', '.jpeg'}
+        if extension[1] in allowed_extensions:
+            f_name = str(uuid.uuid4()) + str(extension[1])
+            app.config['UPLOAD_FOLDER'] = 'static/Uploads'
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
+            if len(apmtname) > 0 and len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(landmark) > 0 and len(city) > 0 and len(pin) > 0 and len(state) > 0 and len(country) > 0 and len(atype) > 0 and len(facilities) > 0:
+                cur = mysql.connection.cursor()
+                cur.execute("UPDATE apartmentdetail SET Aname=%s, Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Atype=%s,RS=%s, Availability=%s,Price=%s,Facilities=%s,Dscrption=%s,image=%s WHERE A_ID=%s",[apmtname, email, mobile, plot_no, address, landmark, city, pin, state, country, atype, rs, availability, Price, facilities, description, f_name, id, ])
+                mysql.connection.commit()
+                cur.close()
+                msg = ' Details have been successfully updated'
+                return render_template("editapart.html", msg=msg, id=id, username=session['username'],email1=session['email1'])
+            else:
+                msg = ' Please fill out the form !'
 
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * from apartmentdetail where A_ID=%s', [id,])
     data = cursor.fetchall()
     cursor.close()
-    return render_template("editapart.html",datas=data,msg=msg,id=id,username=session['username'])
+    return render_template("editapart.html",datas=data,msg=msg,id=id,username=session['username'], email1=session['email1'])
 
 @app.route('/editroom/<string:id>', methods=['GET', 'POST'])
 def editroom(id):
@@ -467,25 +476,28 @@ def editroom(id):
         facilities = details['Facilities']
         description = details['Description']
         file = request.files['file']
-        extension = os.path.splitext(file.filename)
-        f_name = str(uuid.uuid4()) + str(extension)
-        app.config['UPLOAD_FOLDER'] = 'static/Uploads'
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
-        if len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(landmark) > 0 and len(city) > 0 and len(pin) > 0 and len(state) > 0 and len(country) > 0 and len(facilities) > 0:
-             cur = mysql.connection.cursor()
-             cur.execute("UPDATE roomdetail SET Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Availability=%s,Rent=%s,Facilities=%s,Dscrption=%s,image=%s WHERE R_ID=%s", [email,mobile,plot_no,address,landmark,city,pin,state,country,availability,Rent,facilities,description,file,id,])
-             mysql.connection.commit()
-             cur.close()
-             msg = ' Details have been successfully updated'
-             return render_template("editroom.html",msg=msg,id=id,username=session['username'])
-        else:
-            msg = ' Please fill out the form !' 
+        filename = secure_filename(file.filename)
+        extension = os.path.splitext(filename)
+        allowed_extensions = {'.jpg', '.png', '.jpeg'}
+        if extension[1] in allowed_extensions:
+            f_name = str(uuid.uuid4()) + str(extension[1])
+            app.config['UPLOAD_FOLDER'] = 'static/Uploads'
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
+            if len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(landmark) > 0 and len(city) > 0 and len(pin) > 0 and len(state) > 0 and len(country) > 0 and len(facilities) > 0:
+                cur = mysql.connection.cursor()
+                cur.execute("UPDATE roomdetail SET Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Availability=%s,Rent=%s,Facilities=%s,Dscrption=%s,image=%s WHERE R_ID=%s",[email, mobile, plot_no, address, landmark, city, pin, state, country, availability, Rent, facilities, description, f_name, id, ])
+                mysql.connection.commit()
+                cur.close()
+                msg = ' Details have been successfully updated'
+                return render_template("editroom.html", msg=msg, id=id, username=session['username'],email1=session['email1'])
+            else:
+                msg = ' Please fill out the form !'
 
     cursor = mysql.connection.cursor()
     cursor.execute('SELECT * from roomdetail where R_ID=%s', [id,])
     data = cursor.fetchall()
     cursor.close()
-    return render_template("editroom.html",datas=data,msg=msg,id=id,username=session['username'])
+    return render_template("editroom.html",datas=data,msg=msg,id=id,username=session['username'], email1=session['email1'])
 
 @app.route("/Buy_property/<string:id>",methods =['GET', 'POST'])
 def Buy_property(id):
@@ -544,13 +556,13 @@ def Buy_property(id):
 @app.route("/details/")
 def details():
     if 'loggedin' in session:
-        return render_template('details.html', username='admin')
+        return render_template('details.html', username='admin',email1=session['email1'])
     return redirect(url_for('login'))
 
 @app.route("/makecomp/")
 def makecomp():
     if 'loggedin' in session:
-        return render_template('makecomp.html', username='admin')
+        return render_template('makecomp.html', username='admin',email1=session['email1'])
     return redirect(url_for('login'))
 
 @app.route("/apartments/")
@@ -561,10 +573,10 @@ def apartments():
         resultValue = cur.execute("SELECT * FROM apartmentdetail")
         if resultValue > 0:
             apartDetails = cur.fetchall()
-            return render_template('apartments.html',msg=msg, apartDetails=apartDetails,username=session['username'])
+            return render_template('apartments.html',msg=msg, apartDetails=apartDetails,username=session['username'], email1=session['email1'])
         else:
             msg ='There are no Apartments for rent as of now'
-            return render_template('apartments.html', msg=msg,username=session['username'])
+            return render_template('apartments.html', msg=msg,username=session['username'], email1=session['email1'])
         cur.close()
 
 
@@ -579,10 +591,10 @@ def delete1(id):
     resultValue = cur1.execute("SELECT * FROM apartmentdetail")
     if resultValue > 0:
         apartDetails = cur1.fetchall()
-        return render_template('apartments.html',msg=msg, apartDetails=apartDetails,username=session['username'])
+        return render_template('apartments.html',msg=msg, apartDetails=apartDetails,username=session['username'], email1=session['email1'])
     else:
         msg ='There are no Apartments for rent as of now'
-        return render_template('apartments.html', msg=msg,username=session['username'])
+        return render_template('apartments.html', msg=msg,username=session['username'], email1=session['email1'])
     cur1.close()  
 
 @app.route("/delete2/<string:id>")
@@ -596,10 +608,10 @@ def delete2(id):
     resultValue = cur1.execute("SELECT * FROM roomdetail")
     if resultValue > 0:
         roomDetails = cur1.fetchall()
-        return render_template('rooms.html',msg=msg, roomDetails=roomDetails,username=session['username'])
+        return render_template('rooms.html',msg=msg, roomDetails=roomDetails,username=session['username'], email1=session['email1'])
     else:
         msg ='There are no Rooms for rent as of now'
-        return render_template('rooms.html', msg=msg,username=session['username'])
+        return render_template('rooms.html', msg=msg,username=session['username'],email1=session['email1'])
     cur1.close()
 
 @app.route("/rooms/")
@@ -610,10 +622,10 @@ def rooms():
         resultValue = cur.execute("SELECT * FROM roomdetail")
         if resultValue > 0:
             roomDetails = cur.fetchall()
-            return render_template('rooms.html', msg=msg,roomDetails=roomDetails,username=session['username'])
+            return render_template('rooms.html', msg=msg,roomDetails=roomDetails,username=session['username'],email1=session['email1'])
         else:
             msg ='There are no Rooms for rent as of now'
-            return render_template('rooms.html', msg=msg,username=session['username'])
+            return render_template('rooms.html', msg=msg,username=session['username'], email1=session['email1'])
 
 @app.route("/approval/")
 def approval():
@@ -626,11 +638,11 @@ def approval():
             cursor = mysql.connection.cursor()
             result = cursor.execute("SELECT Aname FROM Buy_propertyapt GROUP BY Aname")
             apply2= cursor.fetchall()
-            return render_template('approval.html',msg=msg, apply2=apply2,apply=apply,username=session['username'])
+            return render_template('approval.html',msg=msg, apply2=apply2,apply=apply,username=session['username'], email1=session['email1'])
             cursor.close()
         else:
             msg ='There are no applicants for any of your registered apartments'
-            return render_template('approval.html', msg=msg,username=session['username'])
+            return render_template('approval.html', msg=msg,username=session['username'],email1=session['email1'])
         cur.close()
 
 @app.route("/approve/<string:id>/<Aname>/<Fullname>")
@@ -655,7 +667,7 @@ def approve(id,Aname,Fullname):
         cursor1.close()
     else:
         msg ='There are no applicants for any of your registered apartments'
-        return render_template('approval.html', msg=msg,username=session['username'])
+        return render_template('approval.html', msg=msg,username=session['username'],email1=session['email1'])
     cur.close()
 
 @app.route("/complaintlist/")
@@ -668,7 +680,7 @@ def complaintlist():
         if resultValue > 0 or resultValue2 > 0:
             complain1Details = cur.fetchall()
             complain2Details = cursor.fetchall()
-            return render_template('complaintlist.html', complain1Details=complain1Details,complain2Details=complain2Details,username=session['username'])
+            return render_template('complaintlist.html', complain1Details=complain1Details,complain2Details=complain2Details,username=session['username'],email1=session['email1'])
 
 
     #return render_template('Buy_property.html', msg=msg,username=session['username'])
