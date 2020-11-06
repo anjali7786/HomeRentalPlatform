@@ -264,12 +264,15 @@ def userdashboard():
     if 'loggedin' in session:
         cur = mysql.connection.cursor()
         cursor = mysql.connection.cursor()
+        cursor1 = mysql.connection.cursor()
         resultValue = cur.execute("SELECT Aname,Fullname FROM Buy_propertyapt where Username=%s",[session['username'],])
         result = cursor.execute("SELECT Aname FROM approved where Applicant=%s",[session['username'],])
-        if resultValue > 0 or result > 0:
+        result1 = cursor1.execute("SELECT Room_no,Fullname FROM Buy_propertyroom where Username=%s",[session['username'],])
+        if resultValue > 0 or result > 0 or result1 > 0:
             rental = cur.fetchall()
             outcome = cursor.fetchall()
-            return render_template('userdashboard.html', rental=rental,outcome=outcome,username=session['username'], email1=session['email1'])
+            rental2 = cursor1.fetchall()
+            return render_template('userdashboard.html', rental=rental,outcome=outcome,rental2=rental2,username=session['username'], email1=session['email1'])
         else :
             return render_template('userdashboard.html', username=session['username'], email1=session['email1'])
     return redirect(url_for('login'))
@@ -442,7 +445,7 @@ def editapart(id):
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
             if len(apmtname) > 0 and len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(landmark) > 0 and len(city) > 0 and len(pin) > 0 and len(state) > 0 and len(country) > 0 and len(atype) > 0 and len(facilities) > 0:
                 cur = mysql.connection.cursor()
-                cur.execute("UPDATE apartmentdetail SET Aname=%s, Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Atype=%s,RS=%s, Availability=%s,Price=%s,Facilities=%s,Dscrption=%s,image=%s WHERE A_ID=%s",[apmtname, email, mobile, plot_no, address, landmark, city, pin, state, country, atype, rs, availability, Price, facilities, description, f_name, id, ])
+                cur.execute("UPDATE apartmentdetail SET Aname=%s, Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Atype=%s,RS=%s, Availability=%s,Price=%s,Facilities=%s,Dscrption=%s,image=%s WHERE A_ID=%s",[apmtname, email, mobile, plot_no, address, landmark, city, pin, state, country, atype, rs, availability, Price, facilities, description, f_name,id, ])
                 mysql.connection.commit()
                 cur.close()
                 msg = ' Details have been successfully updated'
@@ -485,7 +488,7 @@ def editroom(id):
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
             if len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(landmark) > 0 and len(city) > 0 and len(pin) > 0 and len(state) > 0 and len(country) > 0 and len(facilities) > 0:
                 cur = mysql.connection.cursor()
-                cur.execute("UPDATE roomdetail SET Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Availability=%s,Rent=%s,Facilities=%s,Dscrption=%s,image=%s WHERE R_ID=%s",[email, mobile, plot_no, address, landmark, city, pin, state, country, availability, Rent, facilities, description, f_name, id, ])
+                cur.execute("UPDATE roomdetail SET Email =%s, Mobile =%s, Room_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Availability=%s,Rent=%s,Facilities=%s,Dscrption=%s,image=%s WHERE R_ID=%s",[email, mobile, plot_no, address, landmark, city, pin, state, country, availability, Rent, facilities, description, f_name,id, ])
                 mysql.connection.commit()
                 cur.close()
                 msg = ' Details have been successfully updated'
@@ -520,9 +523,9 @@ def Buy_property(id):
                     City) > 0 and len(Plot_no) > 0 and len(Address) > 0 and len(Landmark) > 0 and len(
                     Pincode) > 0 and len(State) > 0 and len(Country) > 0:
                 cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                cursor.execute('SELECT * FROM Buy_propertyapt WHERE Email = % s', (Email,))
+                cursor.execute('SELECT * FROM Buy_propertyroom WHERE Email = % s', (Email,))
                 account1 = cursor.fetchone()
-                cursor.execute('SELECT * FROM Buy_propertyapt WHERE Mobile = % s', (Mobile,))
+                cursor.execute('SELECT * FROM Buy_propertyroom WHERE Mobile = % s', (Mobile,))
                 account2 = cursor.fetchone()
                 if not re.match(r'[^@]+@[^@]+\.[^@]+', Email):
                     msg = 'Invalid email address !'
@@ -549,6 +552,60 @@ def Buy_property(id):
         data = cur.fetchall()
         cur.close()
         return render_template("Buy_property.html",datas=data,msg=msg,id=id,username=session['username'], email1=session['email1'])
+
+    else:
+        return redirect(url_for('login'))
+
+@app.route("/Buy_propertyroom/<string:id>",methods =['GET', 'POST'])
+def Buy_propertyroom(id):
+    if 'loggedin' in session:
+        msg = ''
+        if request.method == 'POST':
+            R_ID = request.form['R_ID']
+            Room_no = request.form['Room_no']
+            Fullname = request.form['Fullname']
+            Email = request.form['Email']
+            Mobile = request.form['Mobile']
+            Plot_no = request.form['Plot_no']
+            Address = request.form['Address']
+            Landmark = request.form['Landmark']
+            City = request.form['City']
+            Pincode = request.form['Pincode']
+            State = request.form['State']
+            Country = request.form['Country']
+            if len(R_ID) > 0 and len(Room_no) > 0 and len(Email) > 0 and len(Mobile) > 0 and len(Fullname) > 0 and len(
+                    City) > 0 and len(Plot_no) > 0 and len(Address) > 0 and len(Landmark) > 0 and len(
+                    Pincode) > 0 and len(State) > 0 and len(Country) > 0:
+                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                cursor.execute('SELECT * FROM Buy_propertyroom WHERE Email = % s', (Email,))
+                account1 = cursor.fetchone()
+                cursor.execute('SELECT * FROM Buy_propertyroom WHERE Mobile = % s', (Mobile,))
+                account2 = cursor.fetchone()
+                if not re.match(r'[^@]+@[^@]+\.[^@]+', Email):
+                    msg = 'Invalid email address !'
+                elif len(Mobile) != 10:
+                    msg = 'Enter 10 digit number !'
+                else:
+                    cursor1 = mysql.connection.cursor()
+                    cursor1.execute('SELECT Username from roomdetail where R_ID=%s', [R_ID,])
+                    user = cursor1.fetchall()
+                    cursor1.close()
+                    cursor.execute(
+                        'INSERT INTO Buy_propertyroom VALUES (NULL, % s, % s, % s, % s, % s, % s, %s, %s, %s, %s, %s, %s, %s,%s)',
+                        (R_ID, Room_no, Fullname, Email, Mobile, Plot_no, Address, Landmark, City, Pincode, State,
+                         Country,user[0],session['username']))
+                    mysql.connection.commit()
+                    cursor.close()
+                    msg = 'You have successfully registered !'
+                    return render_template("index.html",username=session['username'], email1=session['email1'])
+            else:
+                msg = 'Please fill out the form !'
+            #return render_template("Buy_property.html",msg=msg, username=session['username'])
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute('SELECT Room_no from roomdetail where R_ID=%s', [id,])
+        data = cur.fetchall()
+        cur.close()
+        return render_template("Buy_propertyroom.html",datas=data,msg=msg,id=id,username=session['username'], email1=session['email1'])
 
     else:
         return redirect(url_for('login'))
@@ -672,6 +729,7 @@ def approve(id,Aname,Fullname):
 
 @app.route("/complaintlist/")
 def complaintlist():
+    msg=''
     if 'loggedin' in session:
         cur = mysql.connection.cursor()
         cursor = mysql.connection.cursor()
@@ -680,7 +738,10 @@ def complaintlist():
         if resultValue > 0 or resultValue2 > 0:
             complain1Details = cur.fetchall()
             complain2Details = cursor.fetchall()
-            return render_template('complaintlist.html', complain1Details=complain1Details,complain2Details=complain2Details,username=session['username'],email1=session['email1'])
+            return render_template('complaintlist.html', msg=msg,complain1Details=complain1Details,complain2Details=complain2Details,username=session['username'],email1=session['email1'])
+        else:
+            msg='There are no complaints as of now'
+            return render_template('complaintlist.html',msg=msg, username=session['username'],email1=session['email1'])
 
 
     #return render_template('Buy_property.html', msg=msg,username=session['username'])
