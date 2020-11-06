@@ -166,7 +166,7 @@
                             {%else%}
                                 <div class="img_search"><img src="{{url_for('static', filename='./Uploads/'+u.image)}}"></div>
                                  <div class=" detail">
-                                     <p class="1">Plot_no: {{u['Plot_no']}}</p>
+                                     <p class="1">Room number: {{u['Room_no']}}</p>
                                      <p class="2">Address: {{u['Address']}}</p>
                                      <p class="3">City: {{u['City']}}</p>
                                      <p class="4">Pincode: {{u['Pincode']}}</p>
@@ -177,7 +177,7 @@
                                      <p class="9">Facilities: {{u['Facilities']}}</p>
                                      <p class="10">Description: {{u['Dscrption']}}</p>
                                      {%if username!="admin"%}
-                                     <a class="buy" href="#">Apply</a>
+                                     <a class="buy" href="{{url_for('Buy_propertyroom',id=u['R_ID'])}}">Apply</a>
                                      {%endif%}
                                  </div>
                             {%endif%}

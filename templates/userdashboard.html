@@ -71,6 +71,12 @@
                               Your Application for apartment {{o[0]}} has been approved!
                           </div>
                         {% endfor %} 
+                        {% for r in rental2 %}
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            {{r[1]}} has applied for your registered room {{r[0]}} !  <a href="{{ url_for('approval') }}" class="alert-link">View</a>
+                          </div>
+                        {% endfor %} 
                     </div>
                  </div>
              </div>

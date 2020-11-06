@@ -96,6 +96,25 @@ CREATE TABLE Buy_propertyapt(
     primary key(bapt_id),
     foreign key(A_ID) references apartmentdetail(A_ID) ON DELETE CASCADE
 );
+CREATE TABLE Buy_propertyroom(
+    bapt_id int(110) NOT NULL AUTO_INCREMENT,
+    R_ID int(110) NOT NULL,
+    Room_no varchar(50) NOT NULL,
+    Fullname varchar(50) NOT NULL,
+    Email varchar(100) NOT NULL,
+    Mobile decimal(10,0) NOT NULL,
+    Age int NOT NULL,
+    Address varchar(100) NOT NULL,
+    Landmark varchar(100) NOT NULL,
+    City varchar(50) NOT NULL,
+    Pincode decimal(6,0) NOT NULL,
+    State varchar(50) NOT NULL,
+    Occupation varchar(50) NOT NULL,
+    Username varchar(50) NOT NULL,
+    Applicant varchar(50) NOT NULL,
+    primary key(bapt_id),
+    foreign key(R_ID) references roomdetail(R_ID) ON DELETE CASCADE
+);
 
 CREATE TABLE approved (
 X_ID int NOT NULL AUTO_INCREMENT,
