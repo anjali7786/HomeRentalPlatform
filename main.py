@@ -30,109 +30,109 @@ def home():
         if option=="apartments":
             op="a"
             if loc=="" and city=="" and minprice=="" and maxprice=="":
-                cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail')
+                cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail')
                 result = cur.fetchall()
             elif loc!="":
                 if city=="" and minprice=="" and maxprice=="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s',[loc])
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s',[loc])
                     result = cur.fetchall()
                 elif city!="" and minprice=="" and maxprice=="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and City = %s',([loc],[city]))
+                    cur.execute('SELECT A_ID,Aname,Username,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and City = %s',([loc],[city]))
                     result = cur.fetchall()
                 elif city!="" and minprice!="" and maxprice=="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and City = %s and Price>=%s',([loc], [city],[minprice]))
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and City = %s and Price>=%s',([loc], [city],[minprice]))
                     result = cur.fetchall()
                 elif city!="" and minprice=="" and maxprice!="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and City = %s and Price<=%s',([loc], [city],[maxprice]))
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and City = %s and Price<=%s',([loc], [city],[maxprice]))
                     result = cur.fetchall()
                 elif city=="" and minprice=="" and maxprice!="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and Price<=%s',([loc],[maxprice]))
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and Price<=%s',([loc],[maxprice]))
                     result = cur.fetchall()
                 elif city=="" and minprice!="" and maxprice=="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and Price<=%s',([loc],[maxprice]))
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and Price<=%s',([loc],[maxprice]))
                     result = cur.fetchall()
                 elif city=="" and minprice!="" and maxprice!="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and Price>=%s and Price<=%s',([loc], [minprice],[maxprice]))
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and Price>=%s and Price<=%s',([loc], [minprice],[maxprice]))
                     result = cur.fetchall()
                 elif city!="" and minprice!="" and maxprice!="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and City=%s and Price>=%s and Price<=%s',([loc],[city], [minprice],[maxprice]))
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where State = % s and City=%s and Price>=%s and Price<=%s',([loc],[city], [minprice],[maxprice]))
                     result = cur.fetchall()
             elif city!="" and loc=="":
                 if minprice=="" and maxprice=="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where City = % s',[city])
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where City = % s',[city])
                     result = cur.fetchall()
                 elif minprice=="" and maxprice!="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where City = % s and Price<=%s',([city],[maxprice]))
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where City = % s and Price<=%s',([city],[maxprice]))
                     result = cur.fetchall()
                 elif minprice!="" and maxprice=="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where City = % s and Price<=%s',([city],[maxprice]))
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where City = % s and Price<=%s',([city],[maxprice]))
                     result = cur.fetchall()
                 elif minprice!="" and maxprice!="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where City = % s and Price>=%s and Price<=%s',([city], [minprice],[maxprice]))
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where City = % s and Price>=%s and Price<=%s',([city], [minprice],[maxprice]))
                     result = cur.fetchall()
             elif city=="" and loc=="":
                 if minprice=="" and maxprice!="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where Price<=%s',([maxprice]))
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where Price<=%s',([maxprice]))
                     result = cur.fetchall()
                 elif minprice!="" and maxprice=="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where Price>=%s',([minprice]))
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where Price>=%s',([minprice]))
                     result = cur.fetchall()
                 elif minprice!="" and maxprice!="":
-                    cur.execute('SELECT A_ID,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where Price>=%s and Price<=%s',([minprice],[maxprice]))
+                    cur.execute('SELECT A_ID,Username,Aname,Email,Mobile,Plot_no,Address,Landmark,City,Pincode,State,Country,Price,Atype,RS,Availability,Facilities,Dscrption,image FROM apartmentdetail where Price>=%s and Price<=%s',([minprice],[maxprice]))
                     result = cur.fetchall()
         elif option=="rooms":
             op="r"
             if loc=="" and city=="" and minprice=="" and maxprice=="":
 
-                cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail')
+                cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail')
                 result = cur.fetchall()
             elif loc!="":
                 if city=="" and minprice=="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s',[loc])
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s',[loc])
                     result = cur.fetchall()
                 elif city!="" and minprice=="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City = %s',([loc],[city]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City = %s',([loc],[city]))
                     result = cur.fetchall()
                 elif city!="" and minprice!="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City = %s and Rent>=%s',([loc], [city],[minprice]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City = %s and Rent>=%s',([loc], [city],[minprice]))
                     result = cur.fetchall()
                 elif city!="" and minprice=="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City = %s and Rent<=%s',([loc], [city],[maxprice]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City = %s and Rent<=%s',([loc], [city],[maxprice]))
                     result = cur.fetchall()
                 elif city=="" and minprice=="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and Rent<=%s',([loc],[maxprice]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and Rent<=%s',([loc],[maxprice]))
                     result = cur.fetchall()
                 elif city=="" and minprice!="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and Rent<=%s',([loc],[maxprice]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and Rent<=%s',([loc],[maxprice]))
                     result = cur.fetchall()
                 elif city=="" and minprice!="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and Rent>=%s and Rent<=%s',([loc], [minprice],[maxprice]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and Rent>=%s and Rent<=%s',([loc], [minprice],[maxprice]))
                     result = cur.fetchall()
                 elif city!="" and minprice!="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City=%s and Rent>=%s and Rent<=%s',([loc],[city], [minprice],[maxprice]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where State = % s and City=%s and Rent>=%s and Rent<=%s',([loc],[city], [minprice],[maxprice]))
                     result = cur.fetchall()
             elif city!="" and loc=="":
                 if minprice=="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s',[city])
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s',[city])
                     result = cur.fetchall()
                 elif minprice=="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s and Rent<=%s',([city],[maxprice]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s and Rent<=%s',([city],[maxprice]))
                     result = cur.fetchall()
                 elif minprice!="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s and Rent<=%s',([city],[maxprice]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s and Rent<=%s',([city],[maxprice]))
                     result = cur.fetchall()
                 elif minprice!="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s and Rent>=%s and Price<=%s',([city], [minprice],[maxprice]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where City = % s and Rent>=%s and Price<=%s',([city], [minprice],[maxprice]))
                     result = cur.fetchall()
             elif city=="" and loc=="":
                 if minprice=="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent<=%s',([maxprice]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent<=%s',([maxprice]))
                     result = cur.fetchall()
                 elif minprice!="" and maxprice=="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent>=%s',([minprice]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent>=%s',([minprice]))
                     result = cur.fetchall()
                 elif minprice!="" and maxprice!="":
-                    cur.execute('SELECT R_ID,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent>=%s and Rent<=%s',([minprice],[maxprice]))
+                    cur.execute('SELECT R_ID,Username,Email,Mobile,Room_no,Address,Landmark,City,Pincode,State,Country,Availability,Facilities,Dscrption,image,Rent FROM roomdetail where Rent>=%s and Rent<=%s',([minprice],[maxprice]))
 
                 
 
