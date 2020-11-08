@@ -11,7 +11,7 @@
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
    <link rel="stylesheet" href="{{url_for('static',filename='apartments.css')}}">
-   <title>List of Rooms</title>
+   <title>List of Registered Rooms</title>
   </head>
   <body>
 
@@ -20,27 +20,28 @@
 <div id="wrapper">
     <div class="overlay"></div>
 
-
-     <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
-      <ul class="nav sidebar-nav">
-        <div class="sidebar-header">
-         <div class="sidebar-brand">
-          <a href="/"><img class="logo31" src="{{url_for('static',filename='./images/logo3.jpg')}}" alt="">Home</a>
-         </div>
-        </div>
-        <li><a href="{{url_for('dashboard')}}">Dashboard</a></li>
-        <li class="dropdown">
-        <a href="#" class="dropdown-toggle"  data-toggle="dropdown">User <span class="caret"></span></a>
-      <ul class="dropdown-menu animated fadeInLeft" role="menu">
-       <div class="dropdown-header">{{username}}</div>
-          <li class="dropdown-header">{{email1}}</li>
-       <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
-       </ul>
-       </li>
-          <li><a href="{{ url_for('details') }}">Details/Update</a></li>
-       <li><a href="{{ url_for('complaintlist') }}">Complaints</a></li>
-       </ul>
+    <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
+          <ul class="nav sidebar-nav">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                  <a href="/"><img class="logo31" src="{{url_for('static',filename='./images/logo3.jpg')}}" alt="">Home</a>
+                </div>
+            </div>
+            <li><a href="/userdashboard">Dashboard</a></li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle"  data-toggle="dropdown">User <span class="caret"></span></a>
+          <ul class="dropdown-menu animated fadeInLeft" role="menu">
+                 <div class="dropdown-header">{{username}}</div>
+                 <li class="dropdown-header">{{email1}}</li>
+           <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+           </ul>
+           </li>
+              <li><a href="/userdashboard/apmt_reg/">Register</a></li>
+              <li><a href="{{ url_for('ownerpropdetails') }}">Details/Update</a></li>
+              <li><a href="{{ url_for('approval') }}">Approve </a></li>
+           </ul>
    </nav>
+
 
          <div id="page-content-wrapper">
              <button type="button" class="hamburger animated fadeInLeft is-closed" data-toggle="offcanvas">
@@ -48,7 +49,7 @@
                  <span class="hamb-middle"></span>
                  <span class="hamb-bottom"></span>
              </button>
-                         
+
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
                     <div id="s1">
@@ -64,9 +65,9 @@
                     Room Number: {{r[3]}}<br>
                     Address: {{r[4]}}<br>
                     Landmark: {{r[5]}}<br>
-                    </p> 
+                    </p>
                  </div>
-                 <div class="column"> 
+                 <div class="column">
                     <pre>      </pre>
                  </div>
                  <div class="column">
@@ -77,17 +78,17 @@
                      Facilities: {{r[12]}} <br>
                      Description: {{r[13]}} <br>
                    <br>
-
-                    <a href="{{url_for('delete2',id=r[0])}}"><button class="btn btn-danger badge-pill" style="width:100px">DELETE</button></a>
+                   <a href="{{url_for('editroom',id=r[0])}}"><button class="btn btn-primary badge-pill" style="width:80px">EDIT</button></a>
+                   <a href="{{url_for('delete2',id=r[0])}}"><button class="btn btn-danger badge-pill" style="width:100px">DELETE</button></a>
                     </p>
                  </div>
                 </div>
                 {% endfor %}
                 <div class="msg" style="color:rgb(24, 21, 51); justify-content:centre;">{{msg}}</div>
             </div>
-                        
-            
-            
+
+
+
          </div>
          <!-- /#page-content-wrapper -->
 

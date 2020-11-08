@@ -39,8 +39,9 @@
        <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
        </ul>
        </li>
-          <li><a href="{{ url_for('details') }}">Details/Update</a></li>
-       <li><a href="{{ url_for('complaintlist') }}">Complaints</a></li>
+          <li><a href="/userdashboard/apmt_reg/">Register</a></li>
+       <li><a href="{{ url_for('ownerpropdetails') }}">Details/Update</a></li>
+       <li><a href="{{ url_for('approval') }}">Approve </a></li>
        </ul>
    </nav>
 
@@ -58,7 +59,7 @@
             <form id="Areg" method="POST" action="{{url_for('editapart',id=id)}}" enctype="multipart/form-data">
 		<h1 id="head">Changes for Apartment Room</h1>
 
-	<p>Please make the required changes</p><br>
+
 	{% for i in datas%}
 	<label for="Aname"><b>Apartment Name</b></label><br>
 		<input aria-labelledby="Areg" type="text" class="form-control" placeholder="Apartment Name" id="Aname" name="name" value="{{i[1]}}" required><br>
@@ -123,7 +124,7 @@
   <label for="file" style="padding-top: 1%;"><b>Upload Image</b></label><br>
     <input aria-labelledby="Areg" type="file" id="file" name="file" style="border-bottom:none; margin-left: 2%; color:#fff;" required><br>
       {%endfor%} 
-        <div class="msg" style="color:rgb(8, 23, 41); justify-content:centre;">{{msg}}</div>
+        <div class="msg" style="color:#fff; margin-left:3%; justify-content:centre;">{{msg}}</div>
 		<button  aria-labelledby="Areg" type="submit" class="btn">Save Changes</button>
               
 	</form>

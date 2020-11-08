@@ -20,8 +20,7 @@
 <div id="wrapper">
     <div class="overlay"></div>
 
-
-     <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
+    <nav class="navbar navbar-inverse fixed-top" id="sidebar-wrapper" role="navigation">
       <ul class="nav sidebar-nav">
         <div class="sidebar-header">
             <div class="sidebar-brand">
@@ -53,46 +52,18 @@
                  <div class="row">
                      <div class="col-lg-8 col-lg-offset-2">
                          <div id="s1">
-                             <h1>DASHBOARD</h1>
+                             <h1>DETAILS/UPDATE</h1>
                          </div>
-                         <div>
-                            <h2>Notifications</h2>
-                        </div>
-                        {% for r in rental %}
-                        <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{r[1]}} has applied for your registered apartment {{r[0]}} !  <a href="{{ url_for('approval') }}" class="alert-link">View</a>
-                          </div>
-                        {% endfor %}  
-                        {% for o in outcome %}
-                        <div class="alert alert-info alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                              Your Application for apartment {{o[0]}} has been approved!
-                          </div>
-                        {% endfor %} 
-                        {% for r in rental2 %}
-                        <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{r[1]}} has applied for your registered room {{r[0]}} !  <a href="{{ url_for('approval') }}" class="alert-link">View</a>
-                          </div>
-                        {% endfor %}
-                         {% for c in compapt %}
-                          {% if c[2]==1 %}
-                             <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                               This "{{c[1]}}" complaint has been registered against your apartment {{c[0]}}. If more complaints are found then your apartment will be deleted.
-                            </div>
-                          {%endif%}
-                        {% endfor %}
-                         {% for c in comproom %}
-                          {% if c[2]==1 %}
-                             <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                               This "{{c[1]}}" complaint has been registered against your room {{c[0]}}. If more complaints are found then your room will be deleted.
-                            </div>
-                          {%endif%}
-                        {% endfor %}
-                    </div>
+                         <div id="s2">
+                             <a href="{{ url_for('ownerrooms')}}">List of Registered Rooms</a>
+                         </div>
+                         <div id="s2">
+                             <a href="{{ url_for('ownerapartments')}}">List of Registered Apartments</a>
+                         </div>
+
+
+
+                     </div>
                  </div>
              </div>
          </div>
@@ -100,8 +71,11 @@
 
      </div>
 
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
