@@ -65,12 +65,14 @@
                         </thead>
                             <tbody>
                             {% for c in complain1Details %}
+                            {% if c[4]!=1 %}
                             <tr>
                                 <td> {{c[0]}} </td>
                                 <td> {{c[1]}} </td>
                                 <td> {{c[2]}} </td>
-                                <td> {{c[3]}} </td>
+                                <td> {{c[3]}} <a class="buy" href="{{url_for('warn',id=c[1],cid=c[0])}}"><button>Warn</button></a></td>
                             </tr>
+                            {% endif %}
                             {% endfor %}
                             </tbody>
                         </table>
@@ -88,11 +90,13 @@
                             </thead>
                                 <tbody>
                                 {% for c in complain2Details %}
+                                 {% if c[4]!=1 %}
                                 <tr>
                                     <td> {{c[0]}} </td>
                                     <td> {{c[1]}} </td>
-                                    <td> {{c[2]}} </td>
+                                    <td> {{c[3]}} <a class="buy" href="{{url_for('warn1',id=c[1],cid=c[0])}}"><button>Warn</button></a></td>
                                 </tr>
+                                {% endif %}
                                 {% endfor %}
                                 </tbody>
                             </table>

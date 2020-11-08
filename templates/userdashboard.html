@@ -39,7 +39,6 @@
        </li>
 
           <li><a href="/userdashboard/apmt_reg/">Register</a></li>
-          <li><a href="{{ url_for('makecomp') }}">Make Complaints</a></li>
           <li><a href="{{ url_for('approval') }}">Approve </a></li>
        </ul>
    </nav>
@@ -76,7 +75,23 @@
                             <button type="button" class="close" data-dismiss="alert">&times;</button>
                             {{r[1]}} has applied for your registered room {{r[0]}} !  <a href="{{ url_for('approval') }}" class="alert-link">View</a>
                           </div>
-                        {% endfor %} 
+                        {% endfor %}
+                         {% for c in compapt %}
+                          {% if c[2]==1 %}
+                             <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                               This "{{c[1]}}" complaint has been registered against your apartment {{c[0]}}. If more complaints are found then your apartment will be deleted.
+                            </div>
+                          {%endif%}
+                        {% endfor %}
+                         {% for c in comproom %}
+                          {% if c[2]==1 %}
+                             <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                               This "{{c[1]}}" complaint has been registered against your room {{c[0]}}. If more complaints are found then your room will be deleted.
+                            </div>
+                          {%endif%}
+                        {% endfor %}
                     </div>
                  </div>
              </div>

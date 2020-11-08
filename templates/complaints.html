@@ -43,7 +43,6 @@
          </li>
   
             <li><a href="/userdashboard/apmt_reg/">Register</a></li>
-            <li><a href="{{ url_for('makecomp') }}">Make Complaints</a></li>
             <li><a href="{{ url_for('approval') }}">Approve </a></li>
          </ul>
      </nav>
@@ -59,13 +58,15 @@
 
 	<div class="container-fluid main">
 		<div class="col">
-           	<form id="Areg" method="POST" action="{{url_for('complaints')}}">
+           	<form id="Areg" method="POST" action="{{url_for('complaints',id=id)}}">
 				<h1 id="head">Complaints</h1>
 
 		<p>Please fill in the form to register a complaint</p><br>
         
         <label for="Aname"><b>Apartment Name</b></label><br>
-            <input aria-labelledby="Areg" type="text" class="form-control" placeholder="Apartment Name" id="Aname" name="name" required><br>
+           {% for i in datas%}
+                   <input aria-labelledby="Areg" type="text" class="form-control" placeholder="Apartment Name" id="Aname" name="name" value="{{i['Aname']}}" required readonly><br>
+                {% endfor %}
 		<label for="complaint"><b>Please enter your complaint</b></label><br>
 			<input aria-labelledby="Areg" type="text" class="form-control" placeholder="Complaint" id="complaint" name="complaint" required><br>
         

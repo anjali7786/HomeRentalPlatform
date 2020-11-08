@@ -265,14 +265,20 @@ def userdashboard():
         cur = mysql.connection.cursor()
         cursor = mysql.connection.cursor()
         cursor1 = mysql.connection.cursor()
+        cursor2 = mysql.connection.cursor()
+        cursor3 = mysql.connection.cursor()
         resultValue = cur.execute("SELECT Aname,Fullname FROM Buy_propertyapt where Username=%s",[session['username'],])
         result = cursor.execute("SELECT Aname FROM approved where Applicant=%s",[session['username'],])
         result1 = cursor1.execute("SELECT Room_no,Fullname FROM Buy_propertyroom where Username=%s",[session['username'],])
-        if resultValue > 0 or result > 0 or result1 > 0:
+        result2 = cursor2.execute("SELECT Aname,Complaint,Flag FROM complaints where A_ID=(select A_ID from apartmentdetail where Username=%s)",[session['username'],])
+        result3 = cursor3.execute("SELECT Room_no,Complaint,Flag FROM complaints2 where R_ID=(select R_ID from roomdetail where Username=%s)",[session['username'],])
+        if resultValue > 0 or result > 0 or result1 > 0 or result2 >0 or result3 >0:
             rental = cur.fetchall()
             outcome = cursor.fetchall()
             rental2 = cursor1.fetchall()
-            return render_template('userdashboard.html', rental=rental,outcome=outcome,rental2=rental2,username=session['username'], email1=session['email1'])
+            compapt = cursor2.fetchall()
+            comproom = cursor3.fetchall()
+            return render_template('userdashboard.html', rental=rental,outcome=outcome,rental2=rental2,compapt=compapt,comproom=comproom,username=session['username'], email1=session['email1'])
         else :
             return render_template('userdashboard.html', username=session['username'], email1=session['email1'])
     return redirect(url_for('login'))
@@ -362,56 +368,54 @@ def room_reg():
         # msg = 'Registration Successful! Thank You !'
     return render_template('roomreg.html', username=session['username'],  email1=session['email1'])
 
-@app.route('/complaints/', methods=['GET', 'POST'])
-def complaints():
+@app.route('/complaints/<string:id>', methods=['GET', 'POST'])
+def complaints(id):
     msg = ''
     if request.method == 'POST':
-        # fetch data
         data = request.form
         apmtname = data['name']
         complaint = data['complaint']
-        if len(apmtname) > 0 and len(complaint) > 0 :
-             cursor1 = mysql.connection.cursor()
-             cursor1.execute('SELECT A_ID from apartmentdetail where Aname=%s and Username=%s', [apmtname,session['username'],])
-             A_ID = cursor1.fetchall()
-             cursor1.close()
-             cur = mysql.connection.cursor()
-             cur.execute("INSERT INTO complaints VALUES(NULL, %s, %s, %s,%s)",
-                        (A_ID,apmtname, complaint,session['username']))
-             mysql.connection.commit()
-             cur.close()
-             msg = '   A complaint has been successfully registered'
-             return render_template('complaints.html',msg=msg,username=session['username'],email1=session['email1'])
+        if len(apmtname) > 0 and len(complaint) > 0:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO complaints VALUES(NULL, %s, %s, %s,0)",(id, apmtname, complaint))
+            mysql.connection.commit()
+            cur.close()
+            msg = '   A complaint has been successfully registered'
         else:
             msg = '   Please fill out the form !'
-    return render_template("complaints.html",msg=msg,username=session['username'], email1=session['email1'])
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute('SELECT Aname from apartmentdetail where A_ID=%s', [id, ])
+    aptn = cur.fetchall()
+    cur.close()
+    if 'loggedin' in session:
+     return render_template("complaints.html", msg=msg, datas=aptn, id=id, username=session['username'],email1=session['email1'])
+    else:
+        return render_template("login.html")
 
-@app.route('/complaints2/', methods=['GET', 'POST'])
-def complaints2():
+@app.route('/complaints2/<string:id>', methods=['GET', 'POST'])
+def complaints2(id):
     msg = ''
     if request.method == 'POST':
-        # fetch data
         data = request.form
         Room_no = data['Plot']
         complaint = data['complaint']
-        if len(Room_no) > 0 and len(complaint) > 0 :
-             cursor1 = mysql.connection.cursor()
-             cursor1.execute('SELECT R_ID from roomdetail where Room_no=%s and Username=%s',[Room_no,session['username'],])
-             data = cursor1.fetchall()
-             cursor1.close()
-             cur = mysql.connection.cursor()
-             for i in data :
-                 cur.execute("INSERT INTO complaints2 VALUES(NULL, %s, %s, %s,%s)",
-                        (i[0],Room_no,complaint,session['username'])) 
-             
-             mysql.connection.commit()
-             cur.close()
-             msg = '   A complaint has been successfully registered'
-             return render_template('complaints2.html',msg=msg,username=session['username'],email1=session['email1'])
+        if len(Room_no) > 0 and len(complaint) > 0:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO complaints2 VALUES(NULL, %s, %s, %s, 0)",[id, Room_no, complaint])
+
+            mysql.connection.commit()
+            cur.close()
+            msg = '   A complaint has been successfully registered'
         else:
             msg = '   Please fill out the form !'
-
-    return render_template("complaints2.html",msg=msg,username=session['username'], email1=session['email1'])
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute('SELECT Room_no from roomdetail where R_ID=%s', [id,])
+    no = cur.fetchall()
+    cur.close()
+    if 'loggedin' in session:
+     return render_template("complaints2.html", msg=msg, datas=no, id=id, username=session['username'],email1=session['email1'])
+    else:
+        return render_template("login.html")
 
 @app.route('/editapart/<string:id>', methods=['GET', 'POST'])
 def editapart(id):
@@ -616,12 +620,6 @@ def details():
         return render_template('details.html', username='admin',email1=session['email1'])
     return redirect(url_for('login'))
 
-@app.route("/makecomp/")
-def makecomp():
-    if 'loggedin' in session:
-        return render_template('makecomp.html', username='admin',email1=session['email1'])
-    return redirect(url_for('login'))
-
 @app.route("/apartments/")
 def apartments():
     msg = ''
@@ -746,5 +744,20 @@ def complaintlist():
 
     #return render_template('Buy_property.html', msg=msg,username=session['username'])
 
+@app.route('/warn/<string:id>/<string:cid>', methods=['GET', 'POST'])
+def warn(id,cid):
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE complaints SET Flag=1 WHERE A_ID=%s and C_ID=%s",[id,cid])
+    mysql.connection.commit()
+    cur.close()
+    return redirect(url_for('complaintlist'))
+
+@app.route('/warn1/<string:id>/<string:cid>', methods=['GET', 'POST'])
+def warn1(id,cid):
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE complaints2 SET Flag=1 WHERE R_ID=%s and C_ID=%s",[id,cid,])
+    mysql.connection.commit()
+    cur.close()
+    return redirect(url_for('complaintlist'))
 
 app.run(debug=True)

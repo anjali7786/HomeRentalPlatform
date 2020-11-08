@@ -161,6 +161,7 @@
                                      <p class="13">Description: {{u['Dscrption']}}</p>
                                      {%if username!="admin" and username!=u['Username']%}
                                      <a class="buy" href="{{url_for('Buy_property',id=u['A_ID'])}}"><button class="btn btn-sm btn-primary">Apply</button></a>
+                                     <a class="buy" href="{{url_for('complaints',id=u['A_ID'])}}"><button class="btn btn-sm btn-primary">Complaints</button></a>
                                      {%endif%}
                                  </div>
                             {%else%}
@@ -178,6 +179,7 @@
                                      <p class="10">Description: {{u['Dscrption']}}</p>
                                      {%if username!="admin" and username!=u['Username']%}
                                      <a class="buy" href="{{url_for('Buy_propertyroom',id=u['R_ID'])}}"><button class="btn btn-sm btn-primary">Apply</button></a>
+                                     <a class="buy" href="{{url_for('complaints2',id=u['R_ID'])}}"><button class="btn btn-sm btn-primary">Complaints</button></a>
                                      {%endif%}
                                  </div>
                             {%endif%}
