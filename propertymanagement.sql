@@ -85,6 +85,7 @@ CREATE TABLE Buy_propertyapt(
     Occupation varchar(50) NOT NULL,
     Username varchar(50) NOT NULL,
     Applicant varchar(50) NOT NULL,
+    Status varchar(50) NOT NULL,
     primary key(bapt_id),
     foreign key(A_ID) references apartmentdetail(A_ID) ON DELETE CASCADE
 );
@@ -104,6 +105,7 @@ CREATE TABLE Buy_propertyroom(
     Occupation varchar(50) NOT NULL,
     Username varchar(50) NOT NULL,
     Applicant varchar(50) NOT NULL,
+	Status varchar(50) NOT NULL,
     primary key(bapt_id),
     foreign key(R_ID) references roomdetail(R_ID) ON DELETE CASCADE
 );
@@ -111,8 +113,18 @@ CREATE TABLE approved (
 X_ID int NOT NULL AUTO_INCREMENT,
 Aname varchar(50) NOT NULL,
 Applicant varchar(50) NOT NULL,
+email varchar(50) NOT NULL,
+mobile varchar(10) NOT NULL,
+PRIMARY KEY (X_ID)
+);
+CREATE TABLE approved2 (
+X_ID int NOT NULL AUTO_INCREMENT,
+Room_no varchar(50) NOT NULL,
+Applicant varchar(50) NOT NULL,
+email varchar(50) NOT NULL,
+mobile varchar(10) NOT NULL,
 PRIMARY KEY (X_ID)
 );
 INSERT INTO accounts (id, username, fullname,email,mobile,password,cpassword) VALUES (1, 'admin', 'admin','admin@gmail.com','1234567890','admin','admin');
 Select * from Buy_propertyapt;
-Select * from complaints;
+Select * from approved;

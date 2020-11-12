@@ -39,7 +39,8 @@
        </li>
           <li><a href="/userdashboard/apmt_reg/">Register</a></li>
           <li><a href="{{ url_for('ownerpropdetails') }}">Details/Update</a></li>
-          <li><a href="{{ url_for('approval') }}">Approve </a></li>
+          <li><a href="{{ url_for('approval') }}">Approve Apartment</a></li>
+          <li><a href="{{ url_for('approval2') }}">Approve Room</a></li>
        </ul>
    </nav>
 
@@ -67,15 +68,21 @@
                         {% for o in outcome %}
                         <div class="alert alert-info alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert">&times;</button>
-                              Your Application for apartment {{o[0]}} has been approved!
+                              Your Application for apartment {{o[0]}} has been approved!  <a href="#" title="Contact info" data-toggle="popover" data-trigger="focus" data-content="Contact the seller for further proceedings. Email:{{o[1]}} Mobile:{{o[2]}}">Contact seller</a>
                           </div>
                         {% endfor %} 
                         {% for r in rental2 %}
                         <div class="alert alert-success alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{r[1]}} has applied for your registered room {{r[0]}} !  <a href="{{ url_for('approval') }}" class="alert-link">View</a>
+                            {{r[1]}} has applied for your registered room {{r[0]}} !  <a href="{{ url_for('approval2') }}" class="alert-link">View</a>
                           </div>
                         {% endfor %}
+                        {% for o in outcome2 %}
+                        <div class="alert alert-info alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                              Your Application for Room_no {{o[0]}} has been approved!  <a href="#" title="Contact info" data-toggle="popover" data-trigger="focus" data-content="Contact the seller for further proceedings. Email:{{o[1]}} Mobile:{{o[2]}}">Contact seller</a>
+                          </div>
+                        {% endfor %} 
                          {% for c in compapt %}
                           {% if c[2]==1 %}
                              <div class="alert alert-success alert-dismissible">
@@ -99,7 +106,8 @@
 
 
      </div>
-
+     
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -108,5 +116,10 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" ></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="{{url_for('static',filename='dashboard.js')}}"></script>
+    <script>
+      $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();   
+      });
+      </script>
   </body>
 </html>

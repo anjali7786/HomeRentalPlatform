@@ -244,12 +244,14 @@ def login():
                     session['id'] = account['id']
                     session['username'] = account['username']
                     session['email1'] = account['email']
+                    session['mobile'] = account['mobile']
                     return redirect(url_for('dashboard'))
                 else:
                     session['loggedin'] = True
                     session['id'] = account['id']
                     session['username'] = account['username']
                     session['email1'] = account['email']
+                    session['mobile'] = account['mobile']
                     return redirect(url_for('userdashboard'))
             else:
                 msg = 'Incorrect username/password!'
@@ -264,6 +266,7 @@ def logout():
     session.pop('id', None)
     session.pop('username', None)
     session.pop('email1', None)
+    session.pop('mobile', None)
     return redirect(url_for('login'))
 
 
@@ -330,9 +333,11 @@ def userdashboard():
         cursor1 = mysql.connection.cursor()
         cursor2 = mysql.connection.cursor()
         cursor3 = mysql.connection.cursor()
+        cur1 = mysql.connection.cursor()
         resultValue = cur.execute("SELECT Aname,Fullname FROM Buy_propertyapt where Username=%s",
                                   [session['username'], ])
-        result = cursor.execute("SELECT Aname FROM approved where Applicant=%s", [session['username'], ])
+        result = cursor.execute("SELECT Aname,email,mobile FROM approved where Applicant=%s", [session['username'], ])
+        result4 = cur1.execute("SELECT Room_no,email,mobile FROM approved2 where Applicant=%s", [session['username'], ])
         result1 = cursor1.execute("SELECT Room_no,Fullname FROM Buy_propertyroom where Username=%s",
                                   [session['username'], ])
         result2 = cursor2.execute(
@@ -341,13 +346,14 @@ def userdashboard():
         result3 = cursor3.execute(
             "SELECT Room_no,Complaint,Flag FROM complaints2 where R_ID in (select R_ID from roomdetail where Username=%s)",
             [session['username'], ])
-        if resultValue > 0 or result > 0 or result1 > 0 or result2 > 0 or result3 > 0:
+        if resultValue > 0 or result > 0 or result1 > 0 or result2 > 0 or result3 > 0 or result4 > 0:
             rental = cur.fetchall()
             outcome = cursor.fetchall()
+            outcome2 = cur1.fetchall()
             rental2 = cursor1.fetchall()
             compapt = cursor2.fetchall()
             comproom = cursor3.fetchall()
-            return render_template('userdashboard.html', rental=rental, outcome=outcome, rental2=rental2,
+            return render_template('userdashboard.html', rental=rental, outcome=outcome, outcome2=outcome2,rental2=rental2,
                                    compapt=compapt, comproom=comproom, username=session['username'],
                                    email1=session['email1'])
         else:
@@ -569,8 +575,12 @@ def editapart(id):
                 cur.execute("UPDATE apartmentdetail SET Aname=%s, Email =%s, Mobile =%s, Plot_no=%s, Address=%s, Landmark=%s, City=%s, Pincode=%s, State=%s, Country=%s, Atype=%s,RS=%s, Availability=%s,Price=%s,Facilities=%s,Dscrption=%s,image=%s WHERE A_ID=%s",[apmtname, email, mobile, plot_no, address, landmark, city, pin, state, country, atype, rs, availability, Price, facilities, description, f_name,id, ])
                 mysql.connection.commit()
                 cur.close()
+                cursor1 = mysql.connection.cursor()
+                cursor1.execute('SELECT * from apartmentdetail where A_ID=%s', [id,])
+                data = cursor1.fetchall()
+                cursor1.close()
                 msg = ' Details have been successfully updated'
-                return render_template("editapart.html", msg=msg, id=id, username=session['username'],email1=session['email1'])
+                return render_template("editapart.html",datas=data,msg=msg, id=id, username=session['username'],email1=session['email1'])
             else:
                 msg = ' Please fill out the form !'
 
@@ -618,8 +628,12 @@ def editroom(id):
                      facilities, description, f_name, id, ])
                 mysql.connection.commit()
                 cur.close()
+                cursor1 = mysql.connection.cursor()
+                cursor1.execute('SELECT * from roomdetail where R_ID=%s', [id, ])
+                data = cursor1.fetchall()
+                cursor1.close()
                 msg = ' Details have been successfully updated'
-                return render_template("editroom.html", msg=msg, id=id, username=session['username'],
+                return render_template("editroom.html",datas=data, msg=msg, id=id, username=session['username'],
                                        email1=session['email1'])
             else:
                 msg = ' Please fill out the form !'
@@ -649,6 +663,7 @@ def Buy_property(id):
             Pincode = request.form['Pincode']
             State = request.form['State']
             Country = request.form['Country']
+            Status = 'Not Approved'
             if len(A_ID) > 0 and len(Aname) > 0 and len(Email) > 0 and len(Mobile) > 0 and len(Fullname) > 0 and len(
                     City) > 0 and len(Plot_no) > 0 and len(Address) > 0 and len(Landmark) > 0 and len(
                 Pincode) > 0 and len(State) > 0 and len(Country) > 0:
@@ -667,9 +682,9 @@ def Buy_property(id):
                     user = cursor1.fetchall()
                     cursor1.close()
                     cursor.execute(
-                        'INSERT INTO Buy_propertyapt VALUES (NULL, % s, % s, % s, % s, % s, % s, %s, %s, %s, %s, %s, %s, %s,%s)',
+                        'INSERT INTO Buy_propertyapt VALUES (NULL, % s, % s, % s, % s, % s, % s, %s, %s, %s, %s, %s, %s, %s,%s,%s)',
                         (A_ID, Aname, Fullname, Email, Mobile, Plot_no, Address, Landmark, City, Pincode, State,
-                         Country, user[0], session['username']))
+                         Country, user[0], session['username'],Status))
                     mysql.connection.commit()
                     cursor.close()
                     msg = 'You have successfully registered !'
@@ -705,6 +720,7 @@ def Buy_propertyroom(id):
             Pincode = request.form['Pincode']
             State = request.form['State']
             Country = request.form['Country']
+            Status = 'Not Approved'
             if len(R_ID) > 0 and len(Room_no) > 0 and len(Email) > 0 and len(Mobile) > 0 and len(Fullname) > 0 and len(
                     City) > 0 and len(Plot_no) > 0 and len(Address) > 0 and len(Landmark) > 0 and len(
                 Pincode) > 0 and len(State) > 0 and len(Country) > 0:
@@ -723,9 +739,9 @@ def Buy_propertyroom(id):
                     user = cursor1.fetchall()
                     cursor1.close()
                     cursor.execute(
-                        'INSERT INTO Buy_propertyroom VALUES (NULL, % s, % s, % s, % s, % s, % s, %s, %s, %s, %s, %s, %s, %s,%s)',
+                        'INSERT INTO Buy_propertyroom VALUES (NULL, % s, % s, % s, % s, % s, % s, %s, %s, %s, %s, %s, %s, %s,%s,%s)',
                         (R_ID, Room_no, Fullname, Email, Mobile, Plot_no, Address, Landmark, City, Pincode, State,
-                         Country, user[0], session['username']))
+                         Country, user[0], session['username'],Status))
                     mysql.connection.commit()
                     cursor.close()
                     msg = 'You have successfully registered !'
@@ -839,16 +855,35 @@ def approval():
             return render_template('approval.html', msg=msg, username=session['username'], email1=session['email1'])
         cur.close()
 
+@app.route("/approval2/")
+def approval2():
+    msg = ''
+    if 'loggedin' in session:
+        cur = mysql.connection.cursor()
+        resultValue = cur.execute("SELECT * FROM Buy_propertyroom where Username=%s", [session['username'], ])
+        if resultValue > 0:
+            apply = cur.fetchall()
+            cursor = mysql.connection.cursor()
+            result = cursor.execute("SELECT Room_no FROM Buy_propertyroom GROUP BY Room_no")
+            apply2 = cursor.fetchall()
+            return render_template('approval2.html', msg=msg, apply2=apply2, apply=apply, username=session['username'],
+                                   email1=session['email1'])
+            cursor.close()
+        else:
+            msg = 'There are no applicants for any of your registered apartments'
+            return render_template('approval2.html', msg=msg, username=session['username'], email1=session['email1'])
+        cur.close()
 
 @app.route("/approve/<string:id>/<Aname>/<Fullname>")
 def approve(id, Aname, Fullname):
     msg = ''
+    Status = 'Approved'
     cur1 = mysql.connection.cursor()
-    cur1.execute("INSERT INTO approved VALUES (NULL, %s, %s)", [Aname, Fullname, ])
+    cur1.execute("INSERT INTO approved VALUES (NULL, %s, %s,%s,%s)", [Aname, Fullname,session['email1'],session['mobile'], ])
     mysql.connection.commit()
     cur1.close()
     cursor = mysql.connection.cursor()
-    cursor.execute("DELETE FROM Buy_propertyapt where A_ID=%s", [id, ])
+    cursor.execute("UPDATE Buy_propertyapt SET Status=%s where bapt_id=%s", [Status,id, ])
     mysql.connection.commit()
     cursor.close()
     cur = mysql.connection.cursor()
@@ -863,6 +898,76 @@ def approve(id, Aname, Fullname):
     else:
         msg = 'There are no applicants for any of your registered apartments'
         return render_template('approval.html', msg=msg, username=session['username'], email1=session['email1'])
+    cur.close()
+
+@app.route("/approve2/<string:id>/<Room_no>/<Fullname>")
+def approve2(id, Room_no, Fullname):
+    msg = ''
+    Status = 'Approved'
+    cur1 = mysql.connection.cursor()
+    cur1.execute("INSERT INTO approved2 VALUES (NULL, %s, %s,%s,%s)", [Room_no, Fullname,session['email1'],session['mobile'], ])
+    mysql.connection.commit()
+    cur1.close()
+    cursor = mysql.connection.cursor()
+    cursor.execute("UPDATE Buy_propertyroom SET Status=%s where bapt_id=%s", [Status,id, ])
+    mysql.connection.commit()
+    cursor.close()
+    cur = mysql.connection.cursor()
+    resultValue = cur.execute("SELECT * FROM Buy_propertyroom where Username=%s", [session['username'], ])
+    if resultValue > 0:
+        apply = cur.fetchall()
+        cursor1 = mysql.connection.cursor()
+        result = cursor1.execute("SELECT Room_no FROM Buy_propertyroom GROUP BY Room_no")
+        apply2 = cursor1.fetchall()
+        return render_template('approval2.html', msg=msg, apply2=apply2, apply=apply, username=session['username'])
+        cursor1.close()
+    else:
+        msg = 'There are no applicants for any of your registered apartments'
+        return render_template('approval2.html', msg=msg, username=session['username'], email1=session['email1'])
+    cur.close()
+
+@app.route("/reject/<string:id>/")
+def reject(id):
+    msg = ''
+    Status = 'Rejected'
+    cur1 = mysql.connection.cursor()
+    cur1.execute("DELETE FROM Buy_propertyapt where bapt_id=%s", [id, ])
+    mysql.connection.commit()
+    cur1.close()
+    cur = mysql.connection.cursor()
+    resultValue = cur.execute("SELECT * FROM Buy_propertyapt where Username=%s", [session['username'], ])
+    if resultValue > 0:
+        apply = cur.fetchall()
+        cursor1 = mysql.connection.cursor()
+        result = cursor1.execute("SELECT Aname FROM Buy_propertyapt GROUP BY Aname")
+        apply2 = cursor1.fetchall()
+        return render_template('approval.html', msg=msg, apply2=apply2, apply=apply, username=session['username'])
+        cursor1.close()
+    else:
+        msg = 'There are no applicants for any of your registered apartments'
+        return render_template('approval.html', msg=msg, username=session['username'], email1=session['email1'])
+    cur.close()
+
+@app.route("/reject2/<string:id>/")
+def reject2(id):
+    msg = ''
+    Status = 'Rejected'
+    cur1 = mysql.connection.cursor()
+    cur1.execute("DELETE FROM Buy_propertyroom where bapt_id=%s", [id, ])
+    mysql.connection.commit()
+    cur1.close()
+    cur = mysql.connection.cursor()
+    resultValue = cur.execute("SELECT * FROM Buy_propertyroom where Username=%s", [session['username'], ])
+    if resultValue > 0:
+        apply = cur.fetchall()
+        cursor1 = mysql.connection.cursor()
+        result = cursor1.execute("SELECT Room_no FROM Buy_propertyroom GROUP BY Room_no")
+        apply2 = cursor1.fetchall()
+        return render_template('approval2.html', msg=msg, apply2=apply2, apply=apply, username=session['username'])
+        cursor1.close()
+    else:
+        msg = 'There are no applicants for any of your registered apartments'
+        return render_template('approval2.html', msg=msg, username=session['username'], email1=session['email1'])
     cur.close()
 
 
