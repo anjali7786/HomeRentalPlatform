@@ -341,10 +341,10 @@ def userdashboard():
         result1 = cursor1.execute("SELECT Room_no,Fullname FROM Buy_propertyroom where Username=%s",
                                   [session['username'], ])
         result2 = cursor2.execute(
-            "SELECT Aname,Complaint,Flag FROM complaints where A_ID in (select A_ID from apartmentdetail where Username=%s)",
+            "SELECT Aname,Complaint,Flag FROM complaints where Flag=1 and A_ID in (select A_ID from apartmentdetail where Username=%s)",
             [session['username'], ])
         result3 = cursor3.execute(
-            "SELECT Room_no,Complaint,Flag FROM complaints2 where R_ID in (select R_ID from roomdetail where Username=%s)",
+            "SELECT Room_no,Complaint,Flag FROM complaints2 where Flag=1 and R_ID in (select R_ID from roomdetail where Username=%s)",
             [session['username'], ])
         if resultValue > 0 or result > 0 or result1 > 0 or result2 > 0 or result3 > 0 or result4 > 0:
             rental = cur.fetchall()
@@ -794,8 +794,13 @@ def delete1(id):
     resultValue = cur1.execute("SELECT * FROM apartmentdetail")
     if resultValue > 0:
         apartDetails = cur1.fetchall()
-        return render_template('apartments.html', msg=msg, apartDetails=apartDetails, username=session['username'],
+        if session['username']!="admin":
+         return render_template('ownerapartments.html', msg=msg, apartDetails=apartDetails, username=session['username'],
                                email1=session['email1'])
+        else:
+            return render_template('apartments.html', msg=msg, apartDetails=apartDetails, username=session['username'],
+                                   email1=session['email1'])
+
     else:
         msg = 'There are no Apartments for rent as of now'
         return render_template('apartments.html', msg=msg, username=session['username'], email1=session['email1'])
@@ -813,8 +818,13 @@ def delete2(id):
     resultValue = cur1.execute("SELECT * FROM roomdetail")
     if resultValue > 0:
         roomDetails = cur1.fetchall()
-        return render_template('rooms.html', msg=msg, roomDetails=roomDetails, username=session['username'],
+        if session['username'] != "admin":
+         return render_template('ownerrooms.html', msg=msg, roomDetails=roomDetails, username=session['username'],
                                email1=session['email1'])
+        else:
+            return render_template('rooms.html', msg=msg, roomDetails=roomDetails, username=session['username'],
+                                   email1=session['email1'])
+
     else:
         msg = 'There are no Rooms for rent as of now'
         return render_template('rooms.html', msg=msg, username=session['username'], email1=session['email1'])

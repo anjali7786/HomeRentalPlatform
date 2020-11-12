@@ -67,7 +67,7 @@ Room_no varchar(50) NOT NULL,
 Complaint varchar(250) NOT NULL,
 Flag int(1) DEFAULT 0,
 PRIMARY KEY (C_ID),
-FOREIGN KEY (R_ID) REFERENCES roomdetail(R_ID)
+FOREIGN KEY (R_ID) REFERENCES roomdetail(R_ID) ON DELETE CASCADE
 );
 CREATE TABLE Buy_propertyapt(
     bapt_id int(110) NOT NULL AUTO_INCREMENT,
