@@ -803,7 +803,10 @@ def delete1(id):
 
     else:
         msg = 'There are no Apartments for rent as of now'
-        return render_template('apartments.html', msg=msg, username=session['username'], email1=session['email1'])
+        if session['username']!="admin":
+            return render_template('ownerapartments.html', msg=msg, username=session['username'], email1=session['email1'])
+        else:
+            return render_template('apartments.html', msg=msg, username=session['username'], email1=session['email1'])
     cur1.close()
 
 
@@ -827,7 +830,10 @@ def delete2(id):
 
     else:
         msg = 'There are no Rooms for rent as of now'
-        return render_template('rooms.html', msg=msg, username=session['username'], email1=session['email1'])
+        if session['username'] != "admin":
+         return render_template('ownerrooms.html', msg=msg, username=session['username'], email1=session['email1'])
+        else:
+            return render_template('rooms.html', msg=msg, username=session['username'], email1=session['email1'])
     cur1.close()
 
 
