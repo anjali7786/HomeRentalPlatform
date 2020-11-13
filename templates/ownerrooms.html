@@ -58,6 +58,8 @@
                         <br>
                     </div>
                 {% for r in roomDetails %}
+                  <div class="card card-sm ">
+                        <div class="dbox">
                 <div class="row">
                  <div class="column">
                     <p>Room ID: {{r[0]}}<br>
@@ -84,6 +86,8 @@
                     </p>
                  </div>
                 </div>
+                    </div>
+                  </div>
                 {% endfor %}
                 <div class="msg" style="color:rgb(24, 21, 51); justify-content:centre;">{{msg}}</div>
             </div>
