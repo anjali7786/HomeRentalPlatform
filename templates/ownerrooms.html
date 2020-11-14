@@ -58,22 +58,24 @@
                         <br>
                     </div>
                 {% for r in roomDetails %}
-                  <div class="card card-sm ">
+                  <div class="card card-lg-8 text-center" style="background-color: rgba(245, 225, 49, 0.836)">
+                    <div class="card-header">
+                      <h4>ROOM NUMBER : {{r[3]}}</h4></div>
                         <div class="dbox">
-                <div class="row">
-                 <div class="column">
-                    <p>Room ID: {{r[0]}}<br>
-                    Email: {{r[1]}}<br>
-                    Mobile: {{r[2]}}<br>
-                    Room Number: {{r[3]}}<br>
-                    Address: {{r[4]}}<br>
-                    Landmark: {{r[5]}}<br>
-                    </p>
-                 </div>
-                 <div class="column">
-                    <pre>      </pre>
-                 </div>
-                 <div class="column">
+                <div class="row justify-content-center">
+                 <div class="col-md-6">
+                    <div class="h-100 d-inline-block" style="width:300px; background-color: rgba(189, 170, 43, 0.322)">
+                      <p>
+                        Room ID : {{r[0]}}
+                        Email: {{r[1]}}<br>
+                        Mobile: {{r[2]}}<br>
+                        Address: {{r[4]}}<br>
+                        Landmark: {{r[5]}}<br>
+                      </p>
+                     </div>
+                     </div>
+                     <div class="col-md-4">
+                      <div class="h-80 d-inline-block" style="width:300px; background-color: rgba(189, 169, 43, 0.322)">
                     <p>City: {{r[6]}}  State: {{r[8]}} <br>
                      Country: {{r[9]}} PIN Code: {{r[7]}}<br>
                      Availability: {{r[10]}}<br>
@@ -81,13 +83,24 @@
                      Facilities: {{r[12]}} <br>
                      Description: {{r[13]}} <br>
                    <br>
-                   <a href="{{url_for('editroom',id=r[0])}}"><button class="btn btn-primary badge-pill" style="width:80px">EDIT</button></a>
-                   <a href="{{url_for('delete2',id=r[0])}}"><button class="btn btn-danger badge-pill" style="width:100px">DELETE</button></a>
+                   
                     </p>
-                 </div>
-                </div>
+                   </div>
+                   </div>
                     </div>
                   </div>
+                  <div class="row justify-content-md-center" >
+                    <div class="col-md-8">
+                     <div class="img_search">
+                       <img src="{{url_for('static', filename='./Uploads/'+r[14])}}" height="300px" width="400px"><br><br>
+                       <a href="{{url_for('editroom',id=r[0])}}"><button class="btn btn-primary badge-pill" style="width:80px">EDIT</button></a>
+                       <a href="{{url_for('delete2',id=r[0])}}"><button class="btn btn-danger badge-pill" style="width:100px">DELETE</button></a>
+                       <br><br>
+                     </div>
+                    </div>
+                   </div>
+             
+             </div>
                 {% endfor %}
                 <div class="msg" style="color:rgb(24, 21, 51); justify-content:centre;">{{msg}}</div>
             </div>
