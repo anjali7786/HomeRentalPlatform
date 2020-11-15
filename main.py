@@ -412,8 +412,8 @@ def apmt_reg():
                 msg = 'Enter 10 digit Mobile number !'
             elif len(pin) != 6:
                 msg = 'Enter 6 digit Pincode !'
-            elif email != session['email1']:
-                msg = 'Enter registered email !'
+            elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+                msg = 'Invalid email address !'
             elif not apmtname or not email or not mobile or not plot_no or not address or not landmark or not city or not pin or not state or not country or not atype or not facilities or not description or not file:
                 msg = 'Please fill out the form !'
             else:
@@ -469,8 +469,8 @@ def room_reg():
                 msg = 'Enter 10 digit Mobile number !'
             elif len(pin) != 6:
                 msg = 'Enter 6 digit Pincode !'
-            elif email != session['email1']:
-                msg = 'Enter registered email !'
+            elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+                msg = 'Invalid email address !'
             elif not email or not mobile or not plot_no or not address or not landmark or not city or not pin or not state or not country or not availability or not rent or not facilities or not description or not file:
                 msg = 'Please fill out the form !'
             else:
@@ -895,7 +895,7 @@ def approve(id, Aname, Fullname):
     msg = ''
     Status = 'Approved'
     cur1 = mysql.connection.cursor()
-    cur1.execute("INSERT INTO approved VALUES (NULL, %s, %s,%s,%s)", [Aname, Fullname,session['email1'],session['mobile'], ])
+    cur1.execute("INSERT INTO approved VALUES (NULL, %s, %s,(select Email from apartmentdetail where Username=%s and Aname=%s),(select Mobile from apartmentdetail where Username=%s and Aname=%s))",[Aname, Fullname,session['username'],Aname, session['username'],Aname, ])
     mysql.connection.commit()
     cur1.close()
     cursor = mysql.connection.cursor()
@@ -909,7 +909,7 @@ def approve(id, Aname, Fullname):
         cursor1 = mysql.connection.cursor()
         result = cursor1.execute("SELECT Aname FROM Buy_propertyapt GROUP BY Aname")
         apply2 = cursor1.fetchall()
-        return render_template('approval.html', msg=msg, apply2=apply2, apply=apply, username=session['username'])
+        return render_template('approval.html', msg=msg, apply2=apply2, apply=apply, username=session['username'], email1=session['email1'])
         cursor1.close()
     else:
         msg = 'There are no applicants for any of your registered apartments'
@@ -921,7 +921,7 @@ def approve2(id, Room_no, Fullname):
     msg = ''
     Status = 'Approved'
     cur1 = mysql.connection.cursor()
-    cur1.execute("INSERT INTO approved2 VALUES (NULL, %s, %s,%s,%s)", [Room_no, Fullname,session['email1'],session['mobile'], ])
+    cur1.execute("INSERT INTO approved2 VALUES (NULL, %s, %s,(select Email from roomdetail where Username=%s and Room_no=%s),(select Mobile from roomdetail where Username=%s and Room_no=%s))",[Room_no, Fullname,session['username'],Room_no,session['username'],Room_no, ])
     mysql.connection.commit()
     cur1.close()
     cursor = mysql.connection.cursor()
@@ -935,7 +935,7 @@ def approve2(id, Room_no, Fullname):
         cursor1 = mysql.connection.cursor()
         result = cursor1.execute("SELECT Room_no FROM Buy_propertyroom GROUP BY Room_no")
         apply2 = cursor1.fetchall()
-        return render_template('approval2.html', msg=msg, apply2=apply2, apply=apply, username=session['username'])
+        return render_template('approval2.html', msg=msg, apply2=apply2, apply=apply, username=session['username'], email1=session['email1'])
         cursor1.close()
     else:
         msg = 'There are no applicants for any of your registered apartments'
