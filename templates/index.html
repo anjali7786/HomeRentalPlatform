@@ -144,7 +144,7 @@
                     <div class="card card-sm ">
                         <div class="dbox">
                            {% if op=="a" %}
-                                 <div class="img_search"><img src="{{url_for('static', filename='./Uploads/'+u.image)}}" height="310px" width="440px"></div>
+                                 <div class="img_search"><img src="{{url_for('static', filename='./Uploads/'+u.image)}}" height="210px" width="240px"></div>
                                  <div class=" detail">
                                      <p class="1">Name of apartment: {{u['Aname']}}</p>
                                      <p class="2">Plot_no: {{u['Plot_no']}}</p>
@@ -165,7 +165,7 @@
                                      {%endif%}
                                  </div>
                             {%else%}
-                                <div class="img_search"><img src="{{url_for('static', filename='./Uploads/'+u.image)}}" height="310px" width="400px"></div>
+                                <div class="img_search"><img src="{{url_for('static', filename='./Uploads/'+u.image)}}" height="210px" width="240px"></div>
                                  <div class=" detail">
                                      <p class="1">Room number: {{u['Room_no']}}</p>
                                      <p class="2">Address: {{u['Address']}}</p>
