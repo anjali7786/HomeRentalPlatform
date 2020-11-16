@@ -51,7 +51,7 @@ CREATE TABLE roomdetail(
     Username varchar(50) NOT NULL,
  	PRIMARY KEY (R_ID)
  );
-CREATE TABLE complaints (
+ CREATE TABLE complaints (
 C_ID int NOT NULL AUTO_INCREMENT,
 A_ID int NOT NULL,
 Aname varchar(50) NOT NULL,
@@ -125,6 +125,5 @@ email varchar(50) NOT NULL,
 mobile varchar(10) NOT NULL,
 PRIMARY KEY (X_ID)
 );
-INSERT INTO accounts (id, username, fullname,email,mobile,password,cpassword) VALUES (1, 'admin', 'admin','admin@gmail.com','1234567890','admin','admin');
-Select * from Buy_propertyapt;
-Select * from approved;
+INSERT INTO accounts (id, username, fullname,email,mobile,password,cpassword) VALUES (1, 'admin', 'admin','admin@gmail.com','1234567890','$2b$12$27a0Gq6GPpr6IT.ANU4RS.lpb9avi5FlPC0PWgk9JaW8r0on830ka','$2b$12$27a0Gq6GPpr6IT.ANU4RS.lpb9avi5FlPC0PWgk9JaW8r0on830ka');
+Select * from accounts;

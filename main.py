@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+import bcrypt
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
@@ -19,7 +20,6 @@ mysql = MySQL(app)
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    msg = ""
     op = ""
     if request.method == 'POST':
         loc = request.form['location']
@@ -234,11 +234,11 @@ def login():
         password = request.form['password']
         if len(username) > 0 and len(password) > 0:
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password))
+            cursor.execute('SELECT * FROM accounts WHERE username = %s', (username, ))
             account = cursor.fetchone()
             mysql.connection.commit()
             cursor.close()
-            if account:
+            if account and bcrypt.checkpw(password.encode('utf-8'), account['password'].encode('utf-8')):
                 if username == 'admin' and password == 'admin':
                     session['loggedin'] = True
                     session['id'] = account['id']
@@ -306,8 +306,9 @@ def register():
             elif cpassword != password:
                 msg = 'Confirm password does not match with password !'
             else:
+                hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
                 cursor.execute('INSERT INTO accounts VALUES (NULL, % s, % s, % s,% s,% s,% s)',
-                               (username, fullname, email, mobile, password, cpassword,))
+                               (username, fullname, email, mobile, hashed, hashed,))
                 mysql.connection.commit()
                 cursor.close()
                 msg = 'You have successfully registered !'
@@ -320,7 +321,6 @@ def register():
 @app.route("/dashboard/")
 def dashboard():
     if 'loggedin' in session:
-        # return render_template('dashboard.html', username=session['username'])
         return render_template('dashboard.html', username='admin', email1=session['email1'])
     return redirect(url_for('login'))
 
@@ -402,21 +402,18 @@ def apmt_reg():
             f_name = str(uuid.uuid4()) + str(extension[1])
             app.config['UPLOAD_FOLDER'] = 'static/Uploads'
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
-        else:
-            msg = 'Upload image in jpg/png/jpeg format only!'
-
-        if len(apmtname) > 0 and len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(
+            if len(apmtname) > 0 and len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(
                 landmark) > 0 and len(city) > 0 and len(pin) > 0 and len(state) > 0 and len(country) > 0 and len(
             atype) > 0 and len(facilities) > 0 and len(description) > 0:
-            if len(mobile) != 10:
+             if len(mobile) != 10:
                 msg = 'Enter 10 digit Mobile number !'
-            elif len(pin) != 6:
+             elif len(pin) != 6:
                 msg = 'Enter 6 digit Pincode !'
-            elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+             elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
                 msg = 'Invalid email address !'
-            elif not apmtname or not email or not mobile or not plot_no or not address or not landmark or not city or not pin or not state or not country or not atype or not facilities or not description or not file:
+             elif not apmtname or not email or not mobile or not plot_no or not address or not landmark or not city or not pin or not state or not country or not atype or not facilities or not description or not file:
                 msg = 'Please fill out the form !'
-            else:
+             else:
                 cur = mysql.connection.cursor()
                 cur.execute(
                     "INSERT INTO apartmentdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
@@ -427,8 +424,10 @@ def apmt_reg():
                 mysql.connection.commit()
                 cur.close()
                 msg = 'Registration Successful! Thank You !'
+            else:
+              msg = 'Please fill out the form !'
         else:
-            msg = 'Please fill out the form !'
+            msg = 'Upload image in jpg/png/jpeg format only!'
 
     return render_template('Apmt_reg.html', username=session['username'], email1=session['email1'], msg=msg)
 
@@ -460,20 +459,19 @@ def room_reg():
             f_name = str(uuid.uuid4()) + str(extension[1])
             app.config['UPLOAD_FOLDER'] = 'static/Uploads'
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], f_name))
-        else:
-            msg = 'Upload image in jpg/png/jpeg format only!'
-        if len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(
+
+            if len(email) > 0 and len(mobile) > 0 and len(plot_no) > 0 and len(address) > 0 and len(
                 landmark) > 0 and len(city) > 0 and len(pin) > 0 and len(state) > 0 and len(country) > 0 and len(
             availability) > 0 and len(rent) > 0 and len(facilities) > 0 and len(description) > 0:
-            if len(mobile) != 10:
+              if len(mobile) != 10:
                 msg = 'Enter 10 digit Mobile number !'
-            elif len(pin) != 6:
+              elif len(pin) != 6:
                 msg = 'Enter 6 digit Pincode !'
-            elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+              elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
                 msg = 'Invalid email address !'
-            elif not email or not mobile or not plot_no or not address or not landmark or not city or not pin or not state or not country or not availability or not rent or not facilities or not description or not file:
+              elif not email or not mobile or not plot_no or not address or not landmark or not city or not pin or not state or not country or not availability or not rent or not facilities or not description or not file:
                 msg = 'Please fill out the form !'
-            else:
+              else:
                 cur = mysql.connection.cursor()
                 cur.execute(
                     "INSERT INTO roomdetail VALUES(NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)",
@@ -482,8 +480,10 @@ def room_reg():
                 mysql.connection.commit()
                 cur.close()
                 msg = 'Registration Successful! Thank You !'
+            else:
+              msg = 'Please fill out the form !'
         else:
-            msg = 'Please fill out the form !'
+            msg = 'Upload image in jpg/png/jpeg format only!'
     return render_template('roomreg.html', username=session['username'], email1=session['email1'], msg=msg)
 
 
@@ -668,10 +668,6 @@ def Buy_property(id):
                     City) > 0 and len(Plot_no) > 0 and len(Address) > 0 and len(Landmark) > 0 and len(
                 Pincode) > 0 and len(State) > 0 and len(Country) > 0:
                 cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                cursor.execute('SELECT * FROM Buy_propertyroom WHERE Email = % s', (Email,))
-                account1 = cursor.fetchone()
-                cursor.execute('SELECT * FROM Buy_propertyroom WHERE Mobile = % s', (Mobile,))
-                account2 = cursor.fetchone()
                 if not re.match(r'[^@]+@[^@]+\.[^@]+', Email):
                     msg = 'Invalid email address !'
                 elif len(Mobile) != 10:
@@ -687,11 +683,9 @@ def Buy_property(id):
                          Country, user[0], session['username'],Status))
                     mysql.connection.commit()
                     cursor.close()
-                    msg = 'You have successfully registered !'
                     return render_template("index.html", username=session['username'], email1=session['email1'])
             else:
                 msg = 'Please fill out the form !'
-            # return render_template("Buy_property.html",msg=msg, username=session['username'])
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT Aname from apartmentdetail where A_ID=%s', [id, ])
         data = cur.fetchall()
@@ -748,7 +742,6 @@ def Buy_propertyroom(id):
                     return render_template("index.html", username=session['username'], email1=session['email1'])
             else:
                 msg = 'Please fill out the form !'
-            # return render_template("Buy_property.html",msg=msg, username=session['username'])
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute('SELECT Room_no from roomdetail where R_ID=%s', [id, ])
         data = cur.fetchall()
@@ -791,21 +784,25 @@ def delete1(id):
     mysql.connection.commit()
     cursor.close()
     cur1 = mysql.connection.cursor()
-    resultValue = cur1.execute("SELECT * FROM apartmentdetail")
-    if resultValue > 0:
+    if session['username'] != "admin":
+        resultValue = cur1.execute("SELECT * FROM apartmentdetail where Username=%s", (session['username'],))
         apartDetails = cur1.fetchall()
-        if session['username']!="admin":
-         return render_template('ownerapartments.html', msg=msg, apartDetails=apartDetails, username=session['username'],
-                               email1=session['email1'])
+        if resultValue > 0:
+            return render_template('ownerapartments.html', msg=msg, apartDetails=apartDetails,
+                                   username=session['username'],
+                                   email1=session['email1'])
         else:
+            msg = 'There are no Apartments for rent as of now'
+            return render_template('ownerapartments.html', msg=msg, username=session['username'],
+                                   email1=session['email1'])
+    else:
+        resultValue = cur1.execute("SELECT * FROM apartmentdetail ")
+        apartDetails = cur1.fetchall()
+        if resultValue > 0:
             return render_template('apartments.html', msg=msg, apartDetails=apartDetails, username=session['username'],
                                    email1=session['email1'])
-
-    else:
-        msg = 'There are no Apartments for rent as of now'
-        if session['username']!="admin":
-            return render_template('ownerapartments.html', msg=msg, username=session['username'], email1=session['email1'])
         else:
+            msg = 'There are no Apartments for rent as of now'
             return render_template('apartments.html', msg=msg, username=session['username'], email1=session['email1'])
     cur1.close()
 
@@ -818,21 +815,25 @@ def delete2(id):
     mysql.connection.commit()
     cursor.close()
     cur1 = mysql.connection.cursor()
-    resultValue = cur1.execute("SELECT * FROM roomdetail")
-    if resultValue > 0:
+    if session['username'] != "admin":
+        resultValue = cur1.execute("SELECT * FROM roomdetail where Username=%s", (session['username'],))
         roomDetails = cur1.fetchall()
-        if session['username'] != "admin":
-         return render_template('ownerrooms.html', msg=msg, roomDetails=roomDetails, username=session['username'],
-                               email1=session['email1'])
+        if resultValue > 0:
+            return render_template('ownerrooms.html', msg=msg, roomDetails=roomDetails,
+                                   username=session['username'],
+                                   email1=session['email1'])
         else:
+            msg = 'There are no Rooms for rent as of now'
+            return render_template('ownerrooms.html', msg=msg, username=session['username'],
+                                   email1=session['email1'])
+    else:
+        resultValue = cur1.execute("SELECT * FROM roomdetail ")
+        roomDetails = cur1.fetchall()
+        if resultValue > 0:
             return render_template('rooms.html', msg=msg, roomDetails=roomDetails, username=session['username'],
                                    email1=session['email1'])
-
-    else:
-        msg = 'There are no Rooms for rent as of now'
-        if session['username'] != "admin":
-         return render_template('ownerrooms.html', msg=msg, username=session['username'], email1=session['email1'])
         else:
+            msg = 'There are no Rooms for rent as of now'
             return render_template('rooms.html', msg=msg, username=session['username'], email1=session['email1'])
     cur1.close()
 
@@ -957,7 +958,7 @@ def reject(id):
         cursor1 = mysql.connection.cursor()
         result = cursor1.execute("SELECT Aname FROM Buy_propertyapt GROUP BY Aname")
         apply2 = cursor1.fetchall()
-        return render_template('approval.html', msg=msg, apply2=apply2, apply=apply, username=session['username'])
+        return render_template('approval.html', msg=msg, apply2=apply2, apply=apply, username=session['username'], email1=session['email1'])
         cursor1.close()
     else:
         msg = 'There are no applicants for any of your registered apartments'
@@ -979,7 +980,7 @@ def reject2(id):
         cursor1 = mysql.connection.cursor()
         result = cursor1.execute("SELECT Room_no FROM Buy_propertyroom GROUP BY Room_no")
         apply2 = cursor1.fetchall()
-        return render_template('approval2.html', msg=msg, apply2=apply2, apply=apply, username=session['username'])
+        return render_template('approval2.html', msg=msg, apply2=apply2, apply=apply, username=session['username'], email1=session['email1'])
         cursor1.close()
     else:
         msg = 'There are no applicants for any of your registered apartments'
@@ -1006,7 +1007,6 @@ def complaintlist():
             return render_template('complaintlist.html', msg=msg, username=session['username'],
                                    email1=session['email1'])
 
-    # return render_template('Buy_property.html', msg=msg,username=session['username'])
 
 
 @app.route('/warn/<string:id>/<string:cid>', methods=['GET', 'POST'])
