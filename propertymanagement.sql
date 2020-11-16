@@ -1,7 +1,7 @@
 CREATE DATABASE propertymanagement;
 USE propertymanagement; 
 CREATE TABLE  accounts (
-  	  id int(11) NOT NULL AUTO_INCREMENT,
+  	  id int(110) NOT NULL AUTO_INCREMENT,
   	  username varchar(50) NOT NULL,
       fullname varchar(50) NOT NULL,
       email varchar(50) NOT NULL,
