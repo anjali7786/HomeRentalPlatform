@@ -64,8 +64,9 @@
                              <a href="{{ url_for('ownerapartments')}}">List of Registered Apartments</a>
                          </div> -->
                         
-                             <div class="card-columns">
-                                <div class="card" style="width:310px;height:520px">
+                             <div class="row">
+                              <div class="col-md-5">
+                                <div class="card text-center" style="width:290px;height:500px">
                                     <img class="card-img-top" src="{{url_for('static', filename='./images/apart1.jpg')}}" alt="Card image" style="width:100%;height:270px;">
                                     <div class="card-body">
                                       <h4 class="card-title">Registered Apartments</h4>
@@ -73,15 +74,17 @@
                                       <a href="{{ url_for('ownerapartments')}}" class="btn btn-success">View List</a>
                                     </div>
                                   </div>
-                             
+                              </div>
                              <br>
-                             <div class="card" style="width:320px;height:520px">
+                             <div class="col-md-6">
+                             <div class="card text-center" style="width: 290px;height:500px">
                                 <img class="card-img-top" src="{{url_for('static', filename='./images/Room1.jpg')}}" alt="Card image" style="width:100%;height:270px;">
                                 <div class="card-body">
                                     <h4 class="card-title">Registered Rooms</h4>
                                     <p class="card-text">List of Rooms registered by you.You can view, edit or delete entries.</p>
                                     <a href="{{ url_for('ownerrooms')}}" class="btn btn-success">View List</a>
                                 </div>
+                             </div>
                              </div>
                              </div>
 
